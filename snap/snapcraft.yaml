@@ -1,0 +1,25 @@
+name: yet-another-sort
+base: core22
+version: '0.1'
+summary: A sort util that mimics the functionality of GNU sort
+description: |
+  This is my-snap's description. You have a paragraph or two to tell the
+  most important story about your snap. Keep it under 100 words though,
+  we live in tweetspace and your description wants to look good in the snap
+  store.
+
+grade: stable
+confinement: strict
+
+apps:
+  yet-another-sort:
+    command: usr/bin/yet-another-sort
+
+parts:
+  yet-another-sort:
+    plugin: go
+    source: .
+    build-snaps:
+      - go
+    organize:
+      bin/yet-another-sort: usr/bin/yet-another-sort
