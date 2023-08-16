@@ -41,19 +41,23 @@ Options:`)
 func initializeLogging() {
 	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
 	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
+	zerolog.SetGlobalLevel(zerolog.InfoLevel)
 }
 
 func main() {
 	initializeLogging()
 	parseCommandLine()
+	if debug {
+		zerolog.SetGlobalLevel(zerolog.DebugLevel)
+	}
 
 	log.Print("hello world")
 
 	for _, file := range files {
-		fmt.Printf("Loading contents of file %s\n", file)
+		log.Info().Msgf("Loading contents of file %s", file)
 		fd, err := os.Open(file)
 		if err != nil {
-			fmt.Printf("Error openeing file %s: %s\n", file, err.Error())
+			log.Fatal().Msgf("Error openeing file %s: %s\n", file, err.Error())
 			os.Exit(1)
 		}
 		defer fd.Close()
@@ -65,7 +69,7 @@ func main() {
 		}
 	}
 
-	fmt.Printf("Read %d files\n", len(files))
+	log.Info().Msgf("Read %d files\n", len(files))
 
 	for i := range fileContents {
 		for _, line := range fileContents[i] {
