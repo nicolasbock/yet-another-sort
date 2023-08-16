@@ -1,6 +1,6 @@
 name: yet-another-sort
 base: core22
-version: '0.1'
+adopt-info: yet-another-sort
 summary: A sort util that mimics the functionality of GNU sort
 description: |
   This is my-snap's description. You have a paragraph or two to tell the
@@ -24,5 +24,9 @@ parts:
     source: .
     build-snaps:
       - go
+    override-build: |
+      set -e -u -x
+      craftctl set version=$(git describe --tags)
+      craftctl default
     organize:
       bin/yet-another-sort: usr/bin/yet-another-sort
