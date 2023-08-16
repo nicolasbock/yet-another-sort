@@ -13,7 +13,8 @@ var debug bool
 
 var fileContents [][]string = [][]string{}
 
-func main() {
+// parseCommandLine initializes the argument parser and parses the command line.
+func parseCommandLine() {
 	flag.Usage = func() {
 		fmt.Fprintf(flag.CommandLine.Output(), "Usage: %s [OPTION]... [FILE]...\n", path.Clean(os.Args[0]))
 		fmt.Fprintln(flag.CommandLine.Output(), `
@@ -31,7 +32,10 @@ Options:`)
 	} else {
 		files = append(files, flag.Args()...)
 	}
-	fmt.Printf("Sorting %s\n", files)
+}
+
+func main() {
+	parseCommandLine()
 
 	for _, file := range files {
 		fmt.Printf("Loading contents of file %s\n", file)
