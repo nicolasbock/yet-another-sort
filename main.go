@@ -14,6 +14,7 @@ import (
 
 var files []string = []string{}
 var debug bool
+var key int
 var multiline int
 var fieldSeparator string
 
@@ -32,6 +33,7 @@ Options:`)
 	flag.BoolVar(&debug, "debug", false, "Print debugging output")
 	flag.IntVar(&multiline, "multiline", 1, "Combine multiple lines before sorting")
 	flag.StringVar(&fieldSeparator, "field-separator", " ", "Use this field separator")
+	flag.IntVar(&key, "key", 1, "Sort lines based on a particular field")
 	flag.Parse()
 	if flag.NArg() == 0 {
 		files = append(files, "-")
