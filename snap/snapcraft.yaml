@@ -1,6 +1,9 @@
 name: yet-another-sort
 base: core22
 adopt-info: yet-another-sort
+license: Apache-2.0
+source-code: https://github.com/nicolasbock/yet-another-sort
+
 summary: A sort util that mimics the functionality of GNU sort
 description: |
   This is my-snap's description. You have a paragraph or two to tell the
