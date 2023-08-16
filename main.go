@@ -12,11 +12,11 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-var files []string = []string{}
 var debug bool
+var fieldSeparator string
+var files []string = []string{}
 var key int
 var multiline int
-var fieldSeparator string
 
 // parseCommandLine initializes the argument parser and parses the command line.
 func parseCommandLine() {
@@ -30,10 +30,12 @@ With no FILE, or when FILE is -, read standard input.
 Options:`)
 		flag.PrintDefaults()
 	}
+
 	flag.BoolVar(&debug, "debug", false, "Print debugging output")
+	flag.IntVar(&key, "key", 1, "Sort lines based on a particular field")
 	flag.IntVar(&multiline, "multiline", 1, "Combine multiple lines before sorting")
 	flag.StringVar(&fieldSeparator, "field-separator", " ", "Use this field separator")
-	flag.IntVar(&key, "key", 1, "Sort lines based on a particular field")
+
 	flag.Parse()
 	if flag.NArg() == 0 {
 		files = append(files, "-")
