@@ -14,8 +14,8 @@ import (
 
 var files []string = []string{}
 var debug bool
-
-var fileContents [][]string = [][]string{}
+var multiline int
+var fieldSeparator string
 
 // parseCommandLine initializes the argument parser and parses the command line.
 func parseCommandLine() {
@@ -29,7 +29,9 @@ With no FILE, or when FILE is -, read standard input.
 Options:`)
 		flag.PrintDefaults()
 	}
-	flag.BoolVar(&debug, "debug", false, "Print debugging information.")
+	flag.BoolVar(&debug, "debug", false, "Print debugging output")
+	flag.IntVar(&multiline, "multiline", 1, "Combine multiple lines before sorting")
+	flag.StringVar(&fieldSeparator, "field-separator", " ", "Use this field separator")
 	flag.Parse()
 	if flag.NArg() == 0 {
 		files = append(files, "-")
@@ -69,6 +71,11 @@ func loadInputFiles(filenames []string) (contents []string) {
 // sortContents sorts the content lines and returns a sorted list.
 func sortContents(contents []string) (sortedContents []string) {
 	sortedContents = append(sortedContents, contents...)
+
+	// Combine multilines with field-separator.
+	// Sort multilined content
+	// Split multilined content into original multilines
+
 	sort.Strings(sortedContents)
 	return sortedContents
 }
