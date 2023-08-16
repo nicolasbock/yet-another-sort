@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"sort"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -69,11 +70,17 @@ func main() {
 		}
 	}
 
-	log.Info().Msgf("Read %d files\n", len(files))
+	log.Debug().Msgf("Read %d files\n", len(files))
 
-	for i := range fileContents {
-		for _, line := range fileContents[i] {
-			fmt.Printf("%s\n", line)
-		}
+	var concatenatedContents []string = []string{}
+
+	for _, contents := range fileContents {
+		concatenatedContents = append(concatenatedContents, contents...)
+	}
+
+	sort.Strings(concatenatedContents)
+
+	for _, line := range concatenatedContents {
+		fmt.Printf("%s\n", line)
 	}
 }
