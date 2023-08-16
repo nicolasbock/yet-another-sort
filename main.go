@@ -6,6 +6,9 @@ import (
 	"fmt"
 	"os"
 	"path"
+
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 )
 
 var files []string = []string{}
@@ -34,8 +37,17 @@ Options:`)
 	}
 }
 
+// initializeLogging initializes the logger.
+func initializeLogging() {
+	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
+	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
+}
+
 func main() {
+	initializeLogging()
 	parseCommandLine()
+
+	log.Print("hello world")
 
 	for _, file := range files {
 		fmt.Printf("Loading contents of file %s\n", file)
