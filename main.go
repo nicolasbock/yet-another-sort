@@ -6,17 +6,44 @@ import (
 	"fmt"
 	"os"
 	"path"
-	"sort"
+	"strings"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
 
+// Configuration options.
 var debug bool
 var fieldSeparator string
 var files []string = []string{}
 var key int
 var multiline int
+
+type ContentLineType struct {
+	lines  []string
+	fields []string
+}
+
+func (l ContentLineType) String() string {
+	var result string
+	result = "multiline\n"
+	for i := range l.lines {
+		result += fmt.Sprintf("  line: '%s'\n", l.lines[i])
+	}
+	result += fmt.Sprintf("  fields: %s\n", strings.Join(l.fields, ", "))
+	return result
+}
+
+type ContentType []ContentLineType
+
+func (c ContentType) String() string {
+	var result string
+	result = fmt.Sprintf("%d multilines\n", len(c))
+	for _, line := range c {
+		result += fmt.Sprint(line)
+	}
+	return result
+}
 
 // parseCommandLine initializes the argument parser and parses the command line.
 func parseCommandLine() {
@@ -52,7 +79,8 @@ func initializeLogging() {
 }
 
 // loadInputFiles loads the input file(s) and returns a concatenated list of lines.
-func loadInputFiles(filenames []string) (contents []string) {
+func loadInputFiles(filenames []string) (contents ContentType) {
+	contents = ContentType{}
 	for _, file := range filenames {
 		log.Debug().Msgf("Loading contents of file %s", file)
 		fd, err := os.Open(file)
@@ -63,24 +91,43 @@ func loadInputFiles(filenames []string) (contents []string) {
 		defer fd.Close()
 		fs := bufio.NewScanner(fd)
 		fs.Split(bufio.ScanLines)
+		var lineNumber int
+		var lastContentLine *ContentLineType
 		for fs.Scan() {
-			contents = append(contents, fs.Text())
+			if lineNumber%multiline == 0 {
+				contents = append(contents, ContentLineType{})
+				lastContentLine = &contents[len(contents)-1]
+			}
+			var line string = fs.Text()
+			var fields []string = strings.Split(line, fieldSeparator)
+			lastContentLine.lines = append(lastContentLine.lines, line)
+			lastContentLine.fields = append(lastContentLine.fields, fields...)
+			lineNumber++
 		}
+		log.Debug().Msgf("Read %d lines in file %s", lineNumber, file)
 	}
-	log.Debug().Msgf("Read %d files\n", len(files))
+	log.Debug().Msgf("Read %d files", len(files))
 
 	return contents
 }
 
 // sortContents sorts the content lines and returns a sorted list.
-func sortContents(contents []string) (sortedContents []string) {
+func sortContents(contents ContentType) (sortedContents ContentType) {
 	sortedContents = append(sortedContents, contents...)
 
 	// Combine multilines with field-separator.
 	// Sort multilined content
 	// Split multilined content into original multilines
 
-	sort.Strings(sortedContents)
+	for i := range sortedContents {
+		for j := range sortedContents {
+			if strings.Compare(sortedContents[i].fields[key-1], sortedContents[j].fields[key-1]) < 0 {
+				var temp ContentLineType = sortedContents[i]
+				sortedContents[i] = sortedContents[j]
+				sortedContents[j] = temp
+			}
+		}
+	}
 	return sortedContents
 }
 
@@ -91,10 +138,18 @@ func main() {
 		zerolog.SetGlobalLevel(zerolog.DebugLevel)
 	}
 
-	var concatenatedContents []string = loadInputFiles(files)
-	var sortedContents []string = sortContents(concatenatedContents)
-
-	for _, line := range sortedContents {
-		fmt.Printf("%s\n", line)
+	var concatenatedContents ContentType = loadInputFiles(files)
+	var sortedContents ContentType = sortContents(concatenatedContents)
+	fmt.Println("original content:")
+	for _, multiline := range concatenatedContents {
+		for _, line := range multiline.lines {
+			fmt.Println(line)
+		}
+	}
+	fmt.Println("sorted content:")
+	for _, multiline := range sortedContents {
+		for _, line := range multiline.lines {
+			fmt.Println(line)
+		}
 	}
 }
