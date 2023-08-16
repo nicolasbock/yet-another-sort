@@ -103,6 +103,16 @@ func loadInputFiles(filenames []string) (contents ContentType) {
 			lastContentLine.lines = append(lastContentLine.lines, line)
 			lastContentLine.fields = append(lastContentLine.fields, fields...)
 			lineNumber++
+			if lineNumber%multiline == 0 {
+				if len(lastContentLine.fields) < key {
+					log.Fatal().Msgf("multiline %d (%s) of file %s does not have enough keys",
+						lineNumber, lastContentLine.lines, file)
+				}
+			}
+		}
+		if len(contents[len(contents)-1].fields) < key {
+			log.Fatal().Msgf("multiline %d (%s) of file %s does not have enough keys",
+				lineNumber, contents[len(contents)-1].lines, file)
 		}
 		log.Debug().Msgf("Read %d lines in file %s", lineNumber, file)
 	}
@@ -140,13 +150,7 @@ func main() {
 
 	var concatenatedContents ContentType = loadInputFiles(files)
 	var sortedContents ContentType = sortContents(concatenatedContents)
-	fmt.Println("original content:")
-	for _, multiline := range concatenatedContents {
-		for _, line := range multiline.lines {
-			fmt.Println(line)
-		}
-	}
-	fmt.Println("sorted content:")
+
 	for _, multiline := range sortedContents {
 		for _, line := range multiline.lines {
 			fmt.Println(line)
