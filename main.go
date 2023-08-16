@@ -57,7 +57,7 @@ func main() {
 		log.Info().Msgf("Loading contents of file %s", file)
 		fd, err := os.Open(file)
 		if err != nil {
-			log.Fatal().Msgf("Error openeing file %s: %s\n", file, err.Error())
+			log.Fatal().Msgf("Error opening file %s: %s\n", file, err.Error())
 			os.Exit(1)
 		}
 		defer fd.Close()
