@@ -45,17 +45,10 @@ func initializeLogging() {
 	zerolog.SetGlobalLevel(zerolog.InfoLevel)
 }
 
-func main() {
-	initializeLogging()
-	parseCommandLine()
-	if debug {
-		zerolog.SetGlobalLevel(zerolog.DebugLevel)
-	}
-
-	log.Print("hello world")
-
-	for _, file := range files {
-		log.Info().Msgf("Loading contents of file %s", file)
+// loadInputFiles loads the input file(s) and returns a concatenated list of lines.
+func loadInputFiles(filenames []string) (contents []string) {
+	for _, file := range filenames {
+		log.Debug().Msgf("Loading contents of file %s", file)
 		fd, err := os.Open(file)
 		if err != nil {
 			log.Fatal().Msgf("Error opening file %s: %s\n", file, err.Error())
@@ -64,23 +57,33 @@ func main() {
 		defer fd.Close()
 		fs := bufio.NewScanner(fd)
 		fs.Split(bufio.ScanLines)
-		fileContents = append(fileContents, []string{})
 		for fs.Scan() {
-			fileContents[len(fileContents)-1] = append(fileContents[len(fileContents)-1], fs.Text())
+			contents = append(contents, fs.Text())
 		}
 	}
-
 	log.Debug().Msgf("Read %d files\n", len(files))
 
-	var concatenatedContents []string = []string{}
+	return contents
+}
 
-	for _, contents := range fileContents {
-		concatenatedContents = append(concatenatedContents, contents...)
+// sortContents sorts the content lines and returns a sorted list.
+func sortContents(contents []string) (sortedContents []string) {
+	sortedContents = append(sortedContents, contents...)
+	sort.Strings(sortedContents)
+	return sortedContents
+}
+
+func main() {
+	initializeLogging()
+	parseCommandLine()
+	if debug {
+		zerolog.SetGlobalLevel(zerolog.DebugLevel)
 	}
 
-	sort.Strings(concatenatedContents)
+	var concatenatedContents []string = loadInputFiles(files)
+	var sortedContents []string = sortContents(concatenatedContents)
 
-	for _, line := range concatenatedContents {
+	for _, line := range sortedContents {
 		fmt.Printf("%s\n", line)
 	}
 }
