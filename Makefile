@@ -1,0 +1,6 @@
+yet-another-sort:
+	go build -ldflags "-X main.Version=${VERSION}" -o $@ ./...
+
+.PHONY: test
+test:
+	go test -v ./...

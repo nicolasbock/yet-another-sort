@@ -53,6 +53,6 @@ parts:
       set -e -u -x
       VERSION=$(git describe --tags)
       craftctl set version=${VERSION}
-      go build -ldflags "-X main.Version=${VERSION}" ./...
+      make
       install --mode 0755 -D yet-another-sort ${CRAFT_PART_INSTALL}/usr/bin/yet-another-sort
       install --mode 0644 -D scripts/yet-another-sort-bash-completion.sh ${CRAFT_PART_INSTALL}/usr/share/yet-another-sort/yet-another-sort-bash-completion.sh
