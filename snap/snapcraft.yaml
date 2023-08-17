@@ -17,6 +17,8 @@ confinement: strict
 apps:
   yet-another-sort:
     command: usr/bin/yet-another-sort
+    completer: usr/share/yet-another-sort/yet-another-sort-bash-completion.sh
+
     plugs:
       - home
       - removable-media
@@ -31,5 +33,6 @@ parts:
       set -e -u -x
       craftctl set version=$(git describe --tags)
       craftctl default
+      install --mode 0644 -D scripts/yet-another-sort-bash-completion.sh ${CRAFT_PART_INSTALL}/usr/share/yet-another-sort/yet-another-sort-bash-completion.sh
     organize:
       bin/yet-another-sort: usr/bin/yet-another-sort
