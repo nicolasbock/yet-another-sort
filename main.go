@@ -23,32 +23,6 @@ var key int
 var multiline int
 var printVersion bool
 
-type ContentLineType struct {
-	lines  []string
-	fields []string
-}
-
-func (l ContentLineType) String() string {
-	var result string
-	result = "multiline\n"
-	for i := range l.lines {
-		result += fmt.Sprintf("  line: '%s'\n", l.lines[i])
-	}
-	result += fmt.Sprintf("  fields: %s\n", strings.Join(l.fields, ", "))
-	return result
-}
-
-type ContentType []ContentLineType
-
-func (c ContentType) String() string {
-	var result string
-	result = fmt.Sprintf("%d multilines\n", len(c))
-	for _, line := range c {
-		result += fmt.Sprint(line)
-	}
-	return result
-}
-
 // parseCommandLine initializes the argument parser and parses the command line.
 func parseCommandLine() {
 	flag.Usage = func() {
@@ -110,45 +84,25 @@ func loadInputFiles(filenames []string) (contents ContentType) {
 			}
 			var line string = fs.Text()
 			var fields []string = strings.Split(line, fieldSeparator)
-			lastContentLine.lines = append(lastContentLine.lines, line)
-			lastContentLine.fields = append(lastContentLine.fields, fields...)
+			lastContentLine.Lines = append(lastContentLine.Lines, line)
+			lastContentLine.Fields = append(lastContentLine.Fields, fields...)
 			lineNumber++
 			if lineNumber%multiline == 0 {
-				if len(lastContentLine.fields) < key {
+				if len(lastContentLine.Fields) < key {
 					log.Fatal().Msgf("multiline %d (%s) of file %s does not have enough keys",
-						lineNumber, lastContentLine.lines, file)
+						lineNumber, lastContentLine.Lines, file)
 				}
 			}
 		}
-		if len(contents[len(contents)-1].fields) < key {
+		if len(contents[len(contents)-1].Fields) < key {
 			log.Fatal().Msgf("multiline %d (%s) of file %s does not have enough keys",
-				lineNumber, contents[len(contents)-1].lines, file)
+				lineNumber, contents[len(contents)-1].Lines, file)
 		}
 		log.Debug().Msgf("Read %d lines in file %s", lineNumber, file)
 	}
 	log.Debug().Msgf("Read %d files", len(files))
 
 	return contents
-}
-
-// sortContents sorts the content lines and returns a sorted list.
-func sortContents(contents ContentType) (sortedContents ContentType) {
-	sortedContents = append(sortedContents, contents...)
-
-	// Combine multilines with field-separator.
-	// Sort multilined content
-	// Split multilined content into original multilines
-
-	for i := range sortedContents {
-		for j := range sortedContents {
-			if strings.Compare(sortedContents[i].fields[key-1], sortedContents[j].fields[key-1]) < 0 {
-				var temp ContentLineType = sortedContents[i]
-				sortedContents[i] = sortedContents[j]
-				sortedContents[j] = temp
-			}
-		}
-	}
-	return sortedContents
 }
 
 func main() {
@@ -159,10 +113,10 @@ func main() {
 	}
 
 	var concatenatedContents ContentType = loadInputFiles(files)
-	var sortedContents ContentType = sortContents(concatenatedContents)
+	var sortedContents ContentType = SortContents(concatenatedContents, key)
 
 	for _, multiline := range sortedContents {
-		for _, line := range multiline.lines {
+		for _, line := range multiline.Lines {
 			fmt.Println(line)
 		}
 	}
