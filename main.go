@@ -12,12 +12,16 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+// Program version
+var Version = "unknown"
+
 // Configuration options.
 var debug bool
 var fieldSeparator string
 var files []string = []string{}
 var key int
 var multiline int
+var printVersion bool
 
 type ContentLineType struct {
 	lines  []string
@@ -59,11 +63,17 @@ Options:`)
 	}
 
 	flag.BoolVar(&debug, "debug", false, "Print debugging output")
+	flag.BoolVar(&printVersion, "version", false, "Print version and exit")
 	flag.IntVar(&key, "key", 1, "Sort lines based on a particular field")
 	flag.IntVar(&multiline, "multiline", 1, "Combine multiple lines before sorting")
 	flag.StringVar(&fieldSeparator, "field-separator", " ", "Use this field separator")
 
 	flag.Parse()
+
+	if printVersion {
+		fmt.Fprintf(flag.CommandLine.Output(), "Version: %s\n", Version)
+		os.Exit(0)
+	}
 	if flag.NArg() == 0 {
 		files = append(files, "-")
 	} else {

@@ -45,14 +45,14 @@ apps:
 
 parts:
   yet-another-sort:
-    plugin: go
+    plugin: dump
     source: .
     build-snaps:
       - go
     override-build: |
       set -e -u -x
-      craftctl set version=$(git describe --tags)
-      craftctl default
+      VERSION=$(git describe --tags)
+      craftctl set version=${VERSION}
+      go build -ldflags "-X main.Version=${VERSION}" ./...
+      install --mode 0755 -D yet-another-sort ${CRAFT_PART_INSTALL}/usr/bin/yet-another-sort
       install --mode 0644 -D scripts/yet-another-sort-bash-completion.sh ${CRAFT_PART_INSTALL}/usr/share/yet-another-sort/yet-another-sort-bash-completion.sh
-    organize:
-      bin/yet-another-sort: usr/bin/yet-another-sort
