@@ -6,10 +6,30 @@ source-code: https://github.com/nicolasbock/yet-another-sort
 
 summary: A sort util that mimics the functionality of GNU sort
 description: |
-  This is my-snap's description. You have a paragraph or two to tell the
-  most important story about your snap. Keep it under 100 words though,
-  we live in tweetspace and your description wants to look good in the snap
-  store.
+  Write sorted concatenation of all file(s) to standard output. This tool leans
+  heavily on GNU `sort` with some additional features.
+
+  ## Multiline Support
+
+  The user can specify how many lines `yet-another-sort` should consider as one
+  `muultiline` unit. For example, using the following input:
+
+  ```
+  b
+  1
+  a
+  2
+  ```
+
+  can be sorted 2 lines at a time with
+
+  ```
+  $ yet-another-sort --multiline 2
+  a
+  2
+  b
+  1
+  ```
 
 grade: stable
 confinement: strict
