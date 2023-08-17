@@ -9,27 +9,23 @@ description: |
   Write sorted concatenation of all file(s) to standard output. This tool leans
   heavily on GNU `sort` with some additional features.
 
-  ## Multiline Support
+  # Multiline Support
 
   The user can specify how many lines `yet-another-sort` should consider as one
-  `muultiline` unit. For example, using the following input:
+  `multiline` unit. For example, using the following input:
 
-  ```
-  b
-  1
-  a
-  2
-  ```
+      b
+      1
+      a
+      2
 
   can be sorted 2 lines at a time with
 
-  ```
-  $ yet-another-sort --multiline 2
-  a
-  2
-  b
-  1
-  ```
+      $ yet-another-sort --multiline 2
+      a
+      2
+      b
+      1
 
 grade: stable
 confinement: strict
