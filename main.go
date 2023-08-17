@@ -62,27 +62,36 @@ func initializeLogging() {
 	zerolog.SetGlobalLevel(zerolog.InfoLevel)
 }
 
+// loadFile loads the text file `filename` and returns an array of string, the
+// lines in that text file. The special filename `-` means standard input.
+func loadFile(filename string) (lines []string) {
+	log.Debug().Msgf("Loading contents of file %s", filename)
+	fd, err := os.Open(filename)
+	if err != nil {
+		log.Fatal().Msgf("Error opening file %s: %s\n", filename, err.Error())
+		os.Exit(1)
+	}
+	defer fd.Close()
+	fs := bufio.NewScanner(fd)
+	fs.Split(bufio.ScanLines)
+	for fs.Scan() {
+		lines = append(lines, fs.Text())
+	}
+	return lines
+}
+
 // loadInputFiles loads the input file(s) and returns a concatenated list of lines.
 func loadInputFiles(filenames []string) (contents ContentType) {
 	contents = ContentType{}
 	for _, file := range filenames {
-		log.Debug().Msgf("Loading contents of file %s", file)
-		fd, err := os.Open(file)
-		if err != nil {
-			log.Fatal().Msgf("Error opening file %s: %s\n", file, err.Error())
-			os.Exit(1)
-		}
-		defer fd.Close()
-		fs := bufio.NewScanner(fd)
-		fs.Split(bufio.ScanLines)
-		var lineNumber int
+		var lines []string = loadFile(file)
 		var lastContentLine *ContentLineType
-		for fs.Scan() {
+		var lineNumber int
+		for _, line := range lines {
 			if lineNumber%multiline == 0 {
 				contents = append(contents, ContentLineType{})
 				lastContentLine = &contents[len(contents)-1]
 			}
-			var line string = fs.Text()
 			var fields []string = strings.Split(line, fieldSeparator)
 			lastContentLine.Lines = append(lastContentLine.Lines, line)
 			lastContentLine.Fields = append(lastContentLine.Fields, fields...)
