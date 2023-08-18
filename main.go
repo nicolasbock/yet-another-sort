@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"runtime/pprof"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -14,6 +15,7 @@ import (
 var Version = "unknown"
 
 // Configuration options.
+var cpuprofile string
 var debug bool
 var fieldSeparator string
 var files []string = []string{}
@@ -39,6 +41,7 @@ Options:`)
 	flag.IntVar(&key, "key", 1, "Sort lines based on a particular field")
 	flag.IntVar(&multiline, "multiline", 1, "Combine multiple lines before sorting")
 	flag.StringVar(&fieldSeparator, "field-separator", " ", "Use this field separator")
+	flag.StringVar(&cpuprofile, "cpuprofile", "", "Write cpu profile to file")
 
 	flag.Parse()
 
@@ -66,6 +69,14 @@ func main() {
 	if debug {
 		zerolog.SetGlobalLevel(zerolog.DebugLevel)
 	}
+    if cpuprofile != "" {
+        f, err := os.Create(cpuprofile)
+        if err != nil {
+            log.Fatal().Msg(err.Error())
+        }
+        pprof.StartCPUProfile(f)
+        defer pprof.StopCPUProfile()
+    }
 
 	var concatenatedContents ContentType = LoadInputFiles(files)
 	var sortedContents ContentType = SortContents(concatenatedContents, key)
