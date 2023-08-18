@@ -2,6 +2,10 @@
 
 A sort util that mimics the functionality of GNU `sort`
 
+[![Build and test](https://github.com/nicolasbock/yet-another-sort/actions/workflows/go.yml/badge.svg)](https://github.com/nicolasbock/yet-another-sort/actions/workflows/go.yml)
+
+[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/yet-another-sort)
+
 ## Introction
 
 This project leans heavily on, and aspires to eventually reach full feature
