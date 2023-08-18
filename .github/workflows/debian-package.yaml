@@ -1,0 +1,48 @@
+---
+
+name: Build Debian package
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: "0 0 1 * *"
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install build dependencies
+        run: |
+          set -e -u -x
+          sudo apt-get install --yes --no-install-recommends \
+            devscripts \
+            git-build-recipe \
+            pristine-tar \
+            quilt
+          sudo apt-get build-dep --yes .
+
+      - name: Build
+        run: |
+          set -e -u -x
+          cat > ../recipe <<EOF
+          # git-build-recipe format 0.4 deb-version {debupstream}-0~{revtime}
+          ${PWD} HEAD
+          EOF
+          cat ../recipe
+          git-build-recipe --allow-fallback-to-native ../recipe build
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-build-package
+          path: build/**
