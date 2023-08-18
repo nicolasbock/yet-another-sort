@@ -11,7 +11,7 @@ description: |
   # Introction
 
   This project leans heavily on, and aspires to eventually reach full feature
-  parity with GNU `sort`. The goal of this project is to experiment with
+  parity with, GNU `sort`. The goal of this project is to experiment with
   additional features that are not part of GNU `sort`.
 
   The main purpose of this program is to write sorted concatenation of all
