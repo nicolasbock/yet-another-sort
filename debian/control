@@ -18,6 +18,10 @@ Multi-Arch: foreign
 Depends:
  ${shlibs:Depends},
  ${misc:Depends},
-Description: A sort util that mimics the functionality of GNU sort
-  Write sorted concatenation of all file(s) to standard output. This tool leans
-  heavily on GNU `sort` with some additional features.
+Description: A sort util that mimics the functionality of GNU `sort`
+ This project leans heavily on, and aspires to eventually reach full feature
+ parity with, GNU `sort`. The goal of this project is to experiment with
+ additional features that are not part of GNU `sort`.
+
+ The main purpose of this program is to write sorted concatenation of all
+ file(s) to standard output.
