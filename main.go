@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"path"
-	"strings"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -61,40 +60,6 @@ func initializeLogging() {
 	zerolog.SetGlobalLevel(zerolog.InfoLevel)
 }
 
-// loadInputFiles loads the input file(s) and returns a concatenated list of lines.
-func loadInputFiles(filenames []string) (contents ContentType) {
-	contents = ContentType{}
-	for _, file := range filenames {
-		var lines []string = LoadFile(file)
-		var lastContentLine *ContentLineType
-		var lineNumber int
-		for _, line := range lines {
-			if lineNumber%multiline == 0 {
-				contents = append(contents, ContentLineType{})
-				lastContentLine = &contents[len(contents)-1]
-			}
-			var fields []string = strings.Split(line, fieldSeparator)
-			lastContentLine.Lines = append(lastContentLine.Lines, line)
-			lastContentLine.Fields = append(lastContentLine.Fields, fields...)
-			lineNumber++
-			if lineNumber%multiline == 0 {
-				if len(lastContentLine.Fields) < key {
-					log.Fatal().Msgf("multiline %d (%s) of file %s does not have enough keys",
-						lineNumber, lastContentLine.Lines, file)
-				}
-			}
-		}
-		if len(contents[len(contents)-1].Fields) < key {
-			log.Fatal().Msgf("multiline %d (%s) of file %s does not have enough keys",
-				lineNumber, contents[len(contents)-1].Lines, file)
-		}
-		log.Debug().Msgf("Read %d lines in file %s", lineNumber, file)
-	}
-	log.Debug().Msgf("Read %d files", len(files))
-
-	return contents
-}
-
 func main() {
 	initializeLogging()
 	parseCommandLine()
@@ -102,7 +67,7 @@ func main() {
 		zerolog.SetGlobalLevel(zerolog.DebugLevel)
 	}
 
-	var concatenatedContents ContentType = loadInputFiles(files)
+	var concatenatedContents ContentType = LoadInputFiles(files)
 	var sortedContents ContentType = SortContents(concatenatedContents, key)
 
 	for _, multiline := range sortedContents {
