@@ -20,6 +20,7 @@ var debug bool
 var fieldSeparator string
 var files []string = []string{}
 var key int
+var memprofile string
 var multiline int
 var printVersion bool
 
@@ -42,6 +43,7 @@ Options:`)
 	flag.IntVar(&multiline, "multiline", 1, "Combine multiple lines before sorting")
 	flag.StringVar(&fieldSeparator, "field-separator", " ", "Use this field separator")
 	flag.StringVar(&cpuprofile, "cpuprofile", "", "Write cpu profile to file")
+	flag.StringVar(&memprofile, "memprofile", "", "write memory profile to file")
 
 	flag.Parse()
 
@@ -69,17 +71,27 @@ func main() {
 	if debug {
 		zerolog.SetGlobalLevel(zerolog.DebugLevel)
 	}
-    if cpuprofile != "" {
-        f, err := os.Create(cpuprofile)
-        if err != nil {
-            log.Fatal().Msg(err.Error())
-        }
-        pprof.StartCPUProfile(f)
-        defer pprof.StopCPUProfile()
-    }
+	if cpuprofile != "" {
+		f, err := os.Create(cpuprofile)
+		if err != nil {
+			log.Fatal().Msg(err.Error())
+		}
+		pprof.StartCPUProfile(f)
+		defer pprof.StopCPUProfile()
+	}
 
 	var concatenatedContents ContentType = LoadInputFiles(files)
 	var sortedContents ContentType = SortContents(concatenatedContents, key)
+
+	if memprofile != "" {
+		f, err := os.Create(memprofile)
+		if err != nil {
+			log.Fatal().Msg(err.Error())
+		}
+		pprof.WriteHeapProfile(f)
+		f.Close()
+		return
+	}
 
 	for _, multiline := range sortedContents {
 		for _, line := range multiline.Lines {
