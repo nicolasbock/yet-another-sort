@@ -1,6 +1,7 @@
 .PHONY: yet-another-sort
 yet-another-sort:
-	go build -v -ldflags "-X main.Version=${VERSION}" -o $@ ./...
+	$(eval VERSION=$(shell git describe --tags))
+	go build -v -ldflags "-X main.Version=$(VERSION)" -o $@ ./...
 
 .PHONY: test
 test:
