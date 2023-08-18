@@ -6,10 +6,16 @@ source-code: https://github.com/nicolasbock/yet-another-sort
 issues: https://github.com/nicolasbock/yet-another-sort/issues
 icon: sort-icon.png
 
-summary: A sort util that mimics the functionality of GNU sort
+summary: A sort util that mimics the functionality of GNU `sort`
 description: |
-  Write sorted concatenation of all file(s) to standard output. This tool leans
-  heavily on GNU `sort` with some additional features.
+  # Introction
+
+  This project leans heavily on, and aspires to eventually reach full feature
+  parity with GNU `sort`. The goal of this project is to experiment with
+  additional features that are not part of GNU `sort`.
+
+  The main purpose of this program is to write sorted concatenation of all
+  file(s) to standard output.
 
   # Multiline Support
 
