@@ -18,7 +18,7 @@ file(s) to standard output.
 ## Multiline Support
 
 The user can specify how many lines `yet-another-sort` should consider as one
-`multiline` unit. For example, using the following `input``:
+`multiline` unit. For example, using the following `input`:
 
     $ cat input
     b
