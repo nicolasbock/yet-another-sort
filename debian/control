@@ -10,7 +10,7 @@ Build-Depends:
  golang-github-juju-gnuflag-dev,
  golang-github-rs-zerolog-dev
 Standards-Version: 4.6.2
-Homepage: <insert the upstream URL, if relevant>
+Homepage: https://github.com/nicolasbock/yet-another-sort
 
 Package: yet-another-sort
 Architecture: any
