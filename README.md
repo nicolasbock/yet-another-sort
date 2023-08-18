@@ -6,7 +6,7 @@ A sort util that mimics the functionality of GNU `sort`
 
 [![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/yet-another-sort)
 
-## Introction
+## Introduction
 
 This project leans heavily on, and aspires to eventually reach full feature
 parity with, GNU `sort`. The goal of this project is to experiment with
@@ -18,8 +18,9 @@ file(s) to standard output.
 ## Multiline Support
 
 The user can specify how many lines `yet-another-sort` should consider as one
-`multiline` unit. For example, using the following input:
+`multiline` unit. For example, using the following `input``:
 
+    $ cat input
     b
     1
     a
@@ -27,7 +28,7 @@ The user can specify how many lines `yet-another-sort` should consider as one
 
 can be sorted 2 lines at a time with
 
-    $ yet-another-sort --multiline 2
+    $ yet-another-sort --multiline 2 input
     a
     2
     b
