@@ -66,13 +66,18 @@ func initializeLogging() {
 // lines in that text file. The special filename `-` means standard input.
 func loadFile(filename string) (lines []string) {
 	log.Debug().Msgf("Loading contents of file %s", filename)
-	fd, err := os.Open(filename)
-	if err != nil {
-		log.Fatal().Msgf("Error opening file %s: %s\n", filename, err.Error())
-		os.Exit(1)
+	var fs *bufio.Scanner
+	if filename != "-" {
+		fd, err := os.Open(filename)
+		if err != nil {
+			log.Fatal().Msgf("Error opening file %s: %s\n", filename, err.Error())
+			os.Exit(1)
+		}
+		defer fd.Close()
+		fs = bufio.NewScanner(fd)
+	} else {
+		fs = bufio.NewScanner(os.Stdin)
 	}
-	defer fd.Close()
-	fs := bufio.NewScanner(fd)
 	fs.Split(bufio.ScanLines)
 	for fs.Scan() {
 		lines = append(lines, fs.Text())
