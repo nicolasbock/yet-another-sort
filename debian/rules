@@ -6,9 +6,5 @@ export DH_GOPKG := github.com/nicolasbock/yet-another-sort
 %:
 	dh $@ --buildsystem=golang --with=golang
 
-override_dh_auto_build:
-	snap install --classic go
-	dh_auto_build
-
 override_dh_auto_install:
 	dh_auto_install -- --no-source

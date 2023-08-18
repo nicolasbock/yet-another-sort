@@ -27,11 +27,12 @@ jobs:
           sudo apt-get install --yes --no-install-recommends \
             devscripts \
             git-build-recipe \
+            pbuilder \
             pristine-tar \
             quilt
           sudo apt-get build-dep --yes .
 
-      - name: Build
+      - name: Build source package
         run: |
           set -e -u -x
           cat > ../recipe <<EOF
@@ -41,8 +42,25 @@ jobs:
           cat ../recipe
           git-build-recipe --allow-fallback-to-native ../recipe build
 
-      - name: Upload artifacts
+      - name: Prepare pbuilder
+        run: |
+          set -e -u -x
+          sudo pbuilder create --distribution jammy
+          sudo pbuilder --update
+
+      - name: Build binary package
+        run: |
+          set -e -u -x
+          sudo pbuilder build --buildresult result build/*.dsc
+
+      - name: Upload artifacts (source package)
         uses: actions/upload-artifact@v3
         with:
-          name: test-build-package
+          name: test-build-source-package
           path: build/**
+
+      - name: Upload artifacts (binary package)
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-build-binary-package
+          path: result/**
