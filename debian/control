@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Nicolas Bock <nicolasbock@gmail.com>
 Rules-Requires-Root: no
 Build-Depends:
- debhelper-compat (= 13),
+ debhelper-compat (>= 12),
  dh-golang,
  golang-any,
  golang-github-juju-gnuflag-dev,
