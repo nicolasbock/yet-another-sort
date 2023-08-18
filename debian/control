@@ -5,6 +5,10 @@ Maintainer: Nicolas Bock <nicolasbock@gmail.com>
 Rules-Requires-Root: no
 Build-Depends:
  debhelper-compat (= 13),
+ dh-golang,
+ golang-any,
+ golang-github-juju-gnuflag-dev,
+ golang-github-rs-zerolog-dev
 Standards-Version: 4.6.2
 Homepage: <insert the upstream URL, if relevant>
 
@@ -14,5 +18,6 @@ Multi-Arch: foreign
 Depends:
  ${shlibs:Depends},
  ${misc:Depends},
-Description: <insert up to 60 chars description>
- <Insert long description, indented with spaces.>
+Description: A sort util that mimics the functionality of GNU sort
+  Write sorted concatenation of all file(s) to standard output. This tool leans
+  heavily on GNU `sort` with some additional features.
