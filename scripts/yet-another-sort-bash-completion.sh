@@ -33,4 +33,4 @@ _complete_yet_another_sort () {
   _filedir
 }
 
-complete -F _complete_yet_another_sort pick-files
+complete -F _complete_yet_another_sort yet-another-sort
