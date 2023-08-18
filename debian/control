@@ -8,7 +8,7 @@ Build-Depends:
  dh-golang,
  golang-any,
  golang-github-juju-gnuflag-dev,
- golang-github-rs-zerolog-dev
+ golang-github-rs-zerolog-dev,
 Standards-Version: 4.6.2
 Homepage: https://github.com/nicolasbock/yet-another-sort
 
