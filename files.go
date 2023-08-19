@@ -46,26 +46,28 @@ func ProcessInputFiles(lines []string, key KeyType) ContentType {
 		lastContentLine.Lines = append(lastContentLine.Lines, line)
 		lastContentLine.Fields = append(lastContentLine.Fields, fields...)
 		lineNumber++
-	}
-	switch key.Type {
-	case NoKey:
-		lastContentLine.CompareLine = strings.Join(lastContentLine.Fields, fieldSeparator)
-	case SingleField:
-		if len(lastContentLine.Fields) < key.Keys[0] {
-			log.Fatal().Msgf("multiline %d (%s) does not have enough keys",
-				lineNumber, lastContentLine.Lines)
+		if lineNumber%multiline == 0 {
+			switch key.Type {
+			case NoKey:
+				lastContentLine.CompareLine = strings.Join(lastContentLine.Fields, fieldSeparator)
+			case SingleField:
+				if len(lastContentLine.Fields) < key.Keys[0] {
+					log.Fatal().Msgf("multiline %d (%s) does not have enough keys",
+						lineNumber, lastContentLine.Lines)
 
+				}
+				lastContentLine.CompareLine = lastContentLine.Fields[key.Keys[0]]
+			case Remainder:
+				if len(lastContentLine.Fields) < key.Keys[0] {
+					log.Fatal().Msgf("multiline %d (%s) does not have enough keys",
+						lineNumber, lastContentLine.Lines)
+
+				}
+				lastContentLine.CompareLine = strings.Join(lastContentLine.Fields[key.Keys[0]:], fieldSeparator)
+			case SubSet:
+
+			}
 		}
-		lastContentLine.CompareLine = lastContentLine.Fields[key.Keys[0]]
-	case Remainder:
-		if len(lastContentLine.Fields) < key.Keys[0] {
-			log.Fatal().Msgf("multiline %d (%s) does not have enough keys",
-				lineNumber, lastContentLine.Lines)
-
-		}
-		lastContentLine.CompareLine = strings.Join(lastContentLine.Fields[key.Keys[0]:], fieldSeparator)
-	case SubSet:
-
 	}
 	return contents
 }

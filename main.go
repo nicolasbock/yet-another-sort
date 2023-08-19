@@ -17,11 +17,11 @@ var Version = "unknown"
 // Configuration options.
 var cpuprofile string
 var debug bool
-var fieldSeparator string
+var fieldSeparator string = " "
 var files []string = []string{}
 var key KeyType
 var memprofile string
-var multiline int
+var multiline int = 1
 var printVersion bool
 var uniq bool
 
