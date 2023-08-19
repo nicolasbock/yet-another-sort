@@ -56,14 +56,14 @@ func ProcessInputFiles(lines []string, key KeyType) ContentType {
 						lineNumber, lastContentLine.Lines)
 
 				}
-				lastContentLine.CompareLine = lastContentLine.Fields[key.Keys[0]]
+				lastContentLine.CompareLine = lastContentLine.Fields[key.Keys[0]-1]
 			case Remainder:
 				if len(lastContentLine.Fields) < key.Keys[0] {
 					log.Fatal().Msgf("multiline %d (%s) does not have enough keys",
 						lineNumber, lastContentLine.Lines)
 
 				}
-				lastContentLine.CompareLine = strings.Join(lastContentLine.Fields[key.Keys[0]:], fieldSeparator)
+				lastContentLine.CompareLine = strings.Join(lastContentLine.Fields[key.Keys[0]-1:], fieldSeparator)
 			case SubSet:
 
 			}
