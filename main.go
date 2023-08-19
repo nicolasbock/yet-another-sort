@@ -23,6 +23,7 @@ var key int
 var memprofile string
 var multiline int
 var printVersion bool
+var uniq bool
 
 // parseCommandLine initializes the argument parser and parses the command line.
 func parseCommandLine() {
@@ -39,6 +40,7 @@ Options:`)
 
 	flag.BoolVar(&debug, "debug", false, "Print debugging output")
 	flag.BoolVar(&printVersion, "version", false, "Print version and exit")
+	flag.BoolVar(&uniq, "uniq", false, "Uniq'ify the sorted multilines")
 	flag.IntVar(&key, "key", 1, "Sort lines based on a particular field")
 	flag.IntVar(&multiline, "multiline", 1, "Combine multiple lines before sorting")
 	flag.StringVar(&fieldSeparator, "field-separator", " ", "Use this field separator")
@@ -82,6 +84,7 @@ func main() {
 
 	var concatenatedContents ContentType = LoadInputFiles(files)
 	var sortedContents ContentType = SortContents(concatenatedContents, key)
+	var uniqContents ContentType = UniqContents(sortedContents, key)
 
 	if memprofile != "" {
 		f, err := os.Create(memprofile)
@@ -93,7 +96,7 @@ func main() {
 		return
 	}
 
-	for _, multiline := range sortedContents {
+	for _, multiline := range uniqContents {
 		for _, line := range multiline.Lines {
 			fmt.Println(line)
 		}

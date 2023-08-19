@@ -7,6 +7,7 @@ _complete_yet_another_sort () {
     --field-separator
     --key
     --multiline
+    --uniq
     -h --help
   )
 
