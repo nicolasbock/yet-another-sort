@@ -100,7 +100,7 @@ func (l ContentLineType) String() string {
 		result += fmt.Sprintf("  line: '%s'\n", l.Lines[i])
 	}
 	result += fmt.Sprintf("  fields: %s\n", strings.Join(l.Fields, ", "))
-	result += fmt.Sprintf("  compare: '%s'\n", l.CompareLine)
+	result += fmt.Sprintf("  compare: '%s'", l.CompareLine)
 	return result
 }
 
