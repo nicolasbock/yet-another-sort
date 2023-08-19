@@ -33,45 +33,51 @@ func LoadFile(filename string) []string {
 }
 
 // LoadInputFiles loads the input file(s) and returns a concatenated list of lines.
+func ProcessInputFiles(lines []string, key KeyType) ContentType {
+	var contents ContentType = ContentType{}
+	var lastContentLine *ContentLineType
+	var lineNumber int
+	for _, line := range lines {
+		if lineNumber%multiline == 0 {
+			contents = append(contents, ContentLineType{})
+			lastContentLine = &contents[len(contents)-1]
+		}
+		var fields []string = strings.Split(line, fieldSeparator)
+		lastContentLine.Lines = append(lastContentLine.Lines, line)
+		lastContentLine.Fields = append(lastContentLine.Fields, fields...)
+		lineNumber++
+	}
+	switch key.Type {
+	case NoKey:
+		lastContentLine.CompareLine = strings.Join(lastContentLine.Fields, fieldSeparator)
+	case SingleField:
+		if len(lastContentLine.Fields) < key.Keys[0] {
+			log.Fatal().Msgf("multiline %d (%s) does not have enough keys",
+				lineNumber, lastContentLine.Lines)
+
+		}
+		lastContentLine.CompareLine = lastContentLine.Fields[key.Keys[0]]
+	case Remainder:
+		if len(lastContentLine.Fields) < key.Keys[0] {
+			log.Fatal().Msgf("multiline %d (%s) does not have enough keys",
+				lineNumber, lastContentLine.Lines)
+
+		}
+		lastContentLine.CompareLine = strings.Join(lastContentLine.Fields[key.Keys[0]:], fieldSeparator)
+	case SubSet:
+
+	}
+	return contents
+}
+
+// LoadInputFiles loads the input file(s) and returns a concatenated list of lines.
 func LoadInputFiles(filenames []string, key KeyType) ContentType {
 	var contents ContentType = ContentType{}
+	var lines []string = []string{}
 	for _, file := range filenames {
-		var lines []string = LoadFile(file)
-		var lastContentLine *ContentLineType
-		var lineNumber int
-		for _, line := range lines {
-			if lineNumber%multiline == 0 {
-				contents = append(contents, ContentLineType{})
-				lastContentLine = &contents[len(contents)-1]
-			}
-			var fields []string = strings.Split(line, fieldSeparator)
-			lastContentLine.Lines = append(lastContentLine.Lines, line)
-			lastContentLine.Fields = append(lastContentLine.Fields, fields...)
-			lineNumber++
-		}
-		switch key.Type {
-		case NoKey:
-			lastContentLine.CompareLine = strings.Join(lastContentLine.Fields, fieldSeparator)
-		case SingleField:
-			if len(lastContentLine.Fields) < key.Keys[0] {
-				log.Fatal().Msgf("multiline %d (%s) of file %s does not have enough keys",
-					lineNumber, lastContentLine.Lines, file)
-
-			}
-			lastContentLine.CompareLine = lastContentLine.Fields[key.Keys[0]]
-		case Remainder:
-			if len(lastContentLine.Fields) < key.Keys[0] {
-				log.Fatal().Msgf("multiline %d (%s) of file %s does not have enough keys",
-					lineNumber, lastContentLine.Lines, file)
-
-			}
-			lastContentLine.CompareLine = strings.Join(lastContentLine.Fields[key.Keys[0]:], fieldSeparator)
-		case SubSet:
-			
-		}
-		log.Debug().Msgf("Read %d lines in file %s", lineNumber, file)
+		lines = append(lines, LoadFile(file)...)
 	}
+	contents = ProcessInputFiles(lines, key)
 	log.Debug().Msgf("Read %d files", len(files))
-
 	return contents
 }
