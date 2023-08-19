@@ -19,7 +19,7 @@ var cpuprofile string
 var debug bool
 var fieldSeparator string
 var files []string = []string{}
-var key int
+var key KeyType
 var memprofile string
 var multiline int
 var printVersion bool
@@ -36,11 +36,20 @@ With no FILE, or when FILE is -, read standard input.
 
 Options:`)
 		flag.PrintDefaults()
+		fmt.Fprintln(flag.CommandLine.Output(), `
+Key Specification:
+
+The keys are specified with F[,[F]] where F is a field (defined by the field separator) in the multiline used to sort.
+
+F      Use only field F for multiline comparisons
+F,     Use the remainder of the multiline starting with field F for comparison
+F1,F2  Use all fields between [F1,F2] for comparison
+		`)
 	}
 
 	flag.BoolVar(&debug, "debug", false, "Print debugging output")
 	flag.StringVar(&fieldSeparator, "field-separator", " ", "Use this field separator")
-	flag.IntVar(&key, "key", 1, "Sort lines based on a particular field")
+	flag.Var(&key, "key", "Sort lines based on a particular field, see 'Key Specification' for details")
 	flag.IntVar(&multiline, "multiline", 1, "Combine multiple lines before sorting")
 	flag.BoolVar(&printVersion, "version", false, "Print version and exit")
 	flag.BoolVar(&uniq, "uniq", false, "Uniq'ify the sorted multilines")
@@ -83,9 +92,9 @@ func main() {
 		defer pprof.StopCPUProfile()
 	}
 
-	var concatenatedContents ContentType = LoadInputFiles(files)
-	var sortedContents ContentType = SortContents(concatenatedContents, key)
-	var uniqContents ContentType = UniqContents(sortedContents, key)
+	var concatenatedContents ContentType = LoadInputFiles(files, key)
+	var sortedContents ContentType = SortContents(concatenatedContents)
+	var uniqContents ContentType = UniqContents(sortedContents)
 
 	if memprofile != "" {
 		f, err := os.Create(memprofile)

@@ -10,7 +10,8 @@ import (
 
 // LoadFile loads the text file `filename` and returns an array of string, the
 // lines in that text file. The special filename `-` means standard input.
-func LoadFile(filename string) (lines []string) {
+func LoadFile(filename string) []string {
+	var lines []string = []string{}
 	log.Debug().Msgf("Loading contents of file %s", filename)
 	var fs *bufio.Scanner
 	if filename != "-" {
@@ -32,8 +33,8 @@ func LoadFile(filename string) (lines []string) {
 }
 
 // LoadInputFiles loads the input file(s) and returns a concatenated list of lines.
-func LoadInputFiles(filenames []string) (contents ContentType) {
-	contents = ContentType{}
+func LoadInputFiles(filenames []string, key KeyType) ContentType {
+	var contents ContentType = ContentType{}
 	for _, file := range filenames {
 		var lines []string = LoadFile(file)
 		var lastContentLine *ContentLineType
@@ -47,16 +48,26 @@ func LoadInputFiles(filenames []string) (contents ContentType) {
 			lastContentLine.Lines = append(lastContentLine.Lines, line)
 			lastContentLine.Fields = append(lastContentLine.Fields, fields...)
 			lineNumber++
-			if lineNumber%multiline == 0 {
-				if len(lastContentLine.Fields) < key {
-					log.Fatal().Msgf("multiline %d (%s) of file %s does not have enough keys",
-						lineNumber, lastContentLine.Lines, file)
-				}
-			}
 		}
-		if len(contents[len(contents)-1].Fields) < key {
-			log.Fatal().Msgf("multiline %d (%s) of file %s does not have enough keys",
-				lineNumber, contents[len(contents)-1].Lines, file)
+		switch key.Type {
+		case NoKey:
+			lastContentLine.CompareLine = strings.Join(lastContentLine.Fields, fieldSeparator)
+		case SingleField:
+			if len(lastContentLine.Fields) < key.Keys[0] {
+				log.Fatal().Msgf("multiline %d (%s) of file %s does not have enough keys",
+					lineNumber, lastContentLine.Lines, file)
+
+			}
+			lastContentLine.CompareLine = lastContentLine.Fields[key.Keys[0]]
+		case Remainder:
+			if len(lastContentLine.Fields) < key.Keys[0] {
+				log.Fatal().Msgf("multiline %d (%s) of file %s does not have enough keys",
+					lineNumber, lastContentLine.Lines, file)
+
+			}
+			lastContentLine.CompareLine = strings.Join(lastContentLine.Fields[key.Keys[0]:], fieldSeparator)
+		case SubSet:
+			
 		}
 		log.Debug().Msgf("Read %d lines in file %s", lineNumber, file)
 	}
