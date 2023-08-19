@@ -110,7 +110,7 @@ func (c ContentType) String() string {
 	var result string
 	result = fmt.Sprintf("%d multilines\n", len(c))
 	for _, line := range c {
-		result += fmt.Sprint(line)
+		result += fmt.Sprintf("%s\n", line)
 	}
-	return result
+	return strings.Trim(result, "\n")
 }
