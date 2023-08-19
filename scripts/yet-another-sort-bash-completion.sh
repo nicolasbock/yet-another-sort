@@ -8,6 +8,7 @@ _complete_yet_another_sort () {
     --key
     --multiline
     --uniq
+    --version
     -h --help
   )
 
