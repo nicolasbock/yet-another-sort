@@ -1,11 +1,11 @@
 .PHONY: yet-another-sort
 yet-another-sort:
 	$(eval VERSION=$(shell git describe --tags))
-	go build -v -ldflags "-X main.Version=$(VERSION)" -o $@ ./...
+	go build -v -ldflags "-X main.Version=$(VERSION)"
 
 .PHONY: test
 test:
-	go test -v ./...
+	go test -v
 
 TEST_FIELDS = 4
 TEST_FIELD_LENGTH = 5
