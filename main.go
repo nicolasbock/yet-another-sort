@@ -39,11 +39,12 @@ Options:`)
 	}
 
 	flag.BoolVar(&debug, "debug", false, "Print debugging output")
-	flag.BoolVar(&printVersion, "version", false, "Print version and exit")
-	flag.BoolVar(&uniq, "uniq", false, "Uniq'ify the sorted multilines")
+	flag.StringVar(&fieldSeparator, "field-separator", " ", "Use this field separator")
 	flag.IntVar(&key, "key", 1, "Sort lines based on a particular field")
 	flag.IntVar(&multiline, "multiline", 1, "Combine multiple lines before sorting")
-	flag.StringVar(&fieldSeparator, "field-separator", " ", "Use this field separator")
+	flag.BoolVar(&printVersion, "version", false, "Print version and exit")
+	flag.BoolVar(&uniq, "uniq", false, "Uniq'ify the sorted multilines")
+
 	flag.StringVar(&cpuprofile, "cpuprofile", "", "Write cpu profile to file")
 	flag.StringVar(&memprofile, "memprofile", "", "write memory profile to file")
 
