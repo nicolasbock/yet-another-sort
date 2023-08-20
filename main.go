@@ -34,6 +34,13 @@ Write sorted concatenation of all FILE(s) to standard output.
 
 With no FILE, or when FILE is -, read standard input.
 
+yet-another-sort interprets the input in 'multilines' which are line groupings of one or multiple lines. This can be useful if the input contains header lines, e.g. a timestamp. Examples are the bash history file, which contains lines such as
+
+	#1692110031
+	ls
+	#1692110033
+	yet-another-sort --multiline 2 --key 2,
+
 Options:`)
 		flag.PrintDefaults()
 		fmt.Fprintln(flag.CommandLine.Output(), `
