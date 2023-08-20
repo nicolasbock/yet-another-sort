@@ -14,12 +14,6 @@ import (
 // field number starting from 1 separated by the field-separator.
 type KeyT int
 
-// KeyType stores the type of key and the keys.
-type KeyType struct {
-	Type KeyT
-	Keys []int
-}
-
 const (
 	// NoKey (the default): use all fields, i.e. the whole line
 	NoKey KeyT = iota
@@ -31,6 +25,26 @@ const (
 	// SubSet: all fields in closed set (F1,F2)
 	SubSet
 )
+
+// KeyType stores the type of key and the keys.
+func (k KeyT) String() string {
+	switch k {
+	case NoKey:
+		return "NoKey"
+	case SingleField:
+		return "SingleField"
+	case Remainder:
+		return "Remainder"
+	case SubSet:
+		return "SubSet"
+	}
+	return ""
+}
+
+type KeyType struct {
+	Type KeyT
+	Keys []int
+}
 
 func (k KeyType) String() string {
 	var result string
@@ -45,6 +59,16 @@ func (k KeyType) String() string {
 		}
 		result += ", [" + strings.Join(keyStrings, ", ") + "]"
 	}
+	return result
+}
+
+func (k KeyType) Representation() string {
+	var result string = fmt.Sprintf("KeyType{Type: %s", k.Type)
+	if len(k.Keys) > 0 {
+		result += fmt.Sprintf(", Keys: []int{%s}",
+			strings.Join(strings.Fields(strings.Trim(fmt.Sprint(k.Keys), "[]")), ", "))
+	}
+	result += "}"
 	return result
 }
 
