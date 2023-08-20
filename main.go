@@ -19,7 +19,7 @@ var cpuprofile string
 var debug bool
 var fieldSeparator string = " "
 var files []string = []string{}
-var key KeyType
+var key KeyType = KeyType{}
 var memprofile string
 var multiline int = 1
 var printVersion bool
