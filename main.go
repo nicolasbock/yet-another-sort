@@ -22,6 +22,7 @@ var files []string = []string{}
 var key KeyType = KeyType{}
 var memprofile string
 var multiline int = 1
+var output string
 var printVersion bool
 var uniq bool
 
@@ -58,6 +59,7 @@ F1,F2  Use all fields between [F1,F2] for comparison
 	flag.StringVar(&fieldSeparator, "field-separator", " ", "Use this field separator")
 	flag.Var(&key, "key", "Sort lines based on a particular field, see 'Key Specification' for details")
 	flag.IntVar(&multiline, "multiline", 1, "Combine multiple lines before sorting")
+	flag.StringVar(&output, "output", "", "Write output to file instead of standard out")
 	flag.BoolVar(&printVersion, "version", false, "Print version and exit")
 	flag.BoolVar(&uniq, "uniq", false, "Uniq'ify the sorted multilines")
 
@@ -113,9 +115,23 @@ func main() {
 		return
 	}
 
+	var fd *os.File
+	if output != "" {
+		_, err := os.Stat(output)
+		if err == nil {
+			log.Fatal().Msgf("output file %s already exists", output)
+		}
+		fd, err = os.Create(output)
+		if err != nil {
+			log.Fatal().Msgf("cannot open output file %s: %s", output, err.Error())
+		}
+		defer fd.Close()
+	} else {
+		fd = os.Stdout
+	}
 	for _, multiline := range uniqContents {
 		for _, line := range multiline.Lines {
-			fmt.Println(line)
+			fmt.Fprintln(fd, line)
 		}
 	}
 }

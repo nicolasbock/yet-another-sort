@@ -7,6 +7,7 @@ _complete_yet_another_sort () {
     --field-separator
     --key
     --multiline
+    --output
     --uniq
     --version
     -h --help
@@ -15,16 +16,10 @@ _complete_yet_another_sort () {
   _init_completion || return
 
   case "$prev" in
-    --folder|--destination)
+    --output)
       _filedir
       return
       ;;
-    --print-database-format)
-      readarray -t COMPREPLY < <(compgen -W 'CSV JSON YAML' -- "${cur}")
-      return
-      ;;
-    --destination-option)
-      readarray -t COMPREPLY < <(compgen -W 'panic delete append' -- "${cur}")
   esac
 
   if [[ "$cur" == -* ]]; then
