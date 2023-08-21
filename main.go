@@ -20,12 +20,12 @@ var debug bool
 var fieldSeparator string = " "
 var files []string = []string{}
 var ignoreLeadingBlanks bool
-var key KeyType = KeyType{}
+var key KeyType
 var memprofile string
 var multiline int = 1
 var output string
 var printVersion bool
-var uniq bool
+var uniq UniqMode
 
 // parseCommandLine initializes the argument parser and parses the command line.
 func parseCommandLine() {
@@ -66,7 +66,7 @@ F1,F2  Use all fields between [F1,F2] for comparison
 	flag.IntVar(&multiline, "multiline", 1, "Combine multiple lines before sorting")
 	flag.StringVar(&output, "output", "", "Write output to file instead of standard out")
 	flag.BoolVar(&printVersion, "version", false, "Print version and exit")
-	flag.BoolVar(&uniq, "uniq", false, "Uniq'ify the sorted multilines")
+	flag.Var(&uniq, "uniq", "Uniq'ify the sorted multilines; keep [ \"first\", \"last\" ] of multiple identical lines")
 
 	flag.StringVar(&cpuprofile, "cpuprofile", "", "Write cpu profile to file")
 	flag.StringVar(&memprofile, "memprofile", "", "write memory profile to file")
