@@ -1,4 +1,4 @@
-name: Build snap
+name: Build snap package
 
 on:
   push:
