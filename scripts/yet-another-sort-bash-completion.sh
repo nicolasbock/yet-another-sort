@@ -22,6 +22,9 @@ _complete_yet_another_sort () {
       _filedir
       return
       ;;
+    --uniq)
+      readarray -t COMPREPLY < <(compgen -W 'first last' -- "${cur}")
+      ;;
   esac
 
   if [[ "$cur" == -* ]]; then

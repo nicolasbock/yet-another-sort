@@ -99,7 +99,7 @@ func (k *KeyType) Set(s string) error {
 				k.Keys = append(k.Keys, int(keyValue))
 			}
 			if k.Keys[0] > k.Keys[1] {
-				log.Fatal().Msgf("key sepcification inverted: %d > %d (%s)", k.Keys[0], k.Keys[1], s)
+				log.Fatal().Msgf("key specification inverted: %d > %d (%s)", k.Keys[0], k.Keys[1], s)
 			}
 		}
 	} else {
@@ -141,4 +141,38 @@ func (c ContentType) String() string {
 		result += fmt.Sprintf("%s\n", line)
 	}
 	return strings.Trim(result, "\n")
+}
+
+type UniqMode int
+
+const (
+	none UniqMode = iota
+	first
+	last
+)
+
+func (um UniqMode) String() string {
+	switch um {
+	case none:
+		return "none"
+	case first:
+		return "first"
+	case last:
+		return "last"
+	}
+	return "FIXME"
+}
+
+func (um *UniqMode) Set(s string) error {
+	switch s {
+	case "none":
+		*um = none
+	case "first":
+		*um = first
+	case "last":
+		*um = last
+	default:
+		return fmt.Errorf("unknown value %s for UniqMode", s)
+	}
+	return nil
 }
