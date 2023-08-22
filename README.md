@@ -18,18 +18,49 @@ file(s) to standard output.
 ## Multiline Support
 
 The user can specify how many lines `yet-another-sort` should consider as one
-`multiline` unit. For example, using the following `input`:
+`multiline` unit. For example, the following `input`:
 
-    $ cat input
-    b
-    1
-    a
-    2
+```console
+$ cat input
+b
+1
+a
+2
+```
 
 can be sorted 2 lines at a time with
 
-    $ yet-another-sort --multiline 2 input
-    a
-    2
-    b
-    1
+```console
+$ yet-another-sort --multiline 2 input
+a
+2
+b
+1
+```
+
+This can be useful when sorting something like a timestamped bash history:
+
+```console
+$ cat .bash_history
+#1692484702
+history
+#1692484723
+ls -lah
+#1692484726
+git status
+#1692484733
+history
+#1692484737
+ls
+$ cat .bash_history \
+  | yet-another-sort --multiline 2 --key 2, --uniq last \
+  | yet-another-sort --multiline 2 --key 1
+#1692484723
+ls -lah
+#1692484726
+git status
+#1692484733
+history
+#1692484737
+ls
+```
