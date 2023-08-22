@@ -121,10 +121,14 @@ func (l ContentLineType) String() string {
 	var result string
 	result = "multiline\n"
 	for i := range l.Lines {
-		result += fmt.Sprintf("  line: '%s'\n", l.Lines[i])
+		result += fmt.Sprintf("  line: \"%s\"\n", l.Lines[i])
 	}
-	result += fmt.Sprintf("  fields: %s\n", strings.Join(l.Fields, ", "))
-	result += fmt.Sprintf("  compare: '%s'", l.CompareLine)
+	var fields []string = []string{}
+	for _, field := range l.Fields {
+		fields = append(fields, fmt.Sprintf("\"%s\"", field))
+	}
+	result += fmt.Sprintf("  fields: [ %s ]\n", strings.Join(fields, ", "))
+	result += fmt.Sprintf("  compare: \"%s\"", l.CompareLine)
 	return result
 }
 
