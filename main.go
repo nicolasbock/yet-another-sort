@@ -19,6 +19,7 @@ var cpuprofile string
 var debug bool
 var fieldSeparator string = " "
 var files []string = []string{}
+var forceOutput bool
 var ignoreLeadingBlanks bool
 var key KeyType
 var memprofile string
@@ -60,6 +61,7 @@ F1,F2  Use all fields between [F1,F2] for comparison
 
 	flag.BoolVar(&debug, "debug", false, "Print debugging output")
 	flag.StringVar(&fieldSeparator, "field-separator", " ", "Use this field separator")
+	flag.BoolVar(&forceOutput, "force", false, "Overwrite output file if it exists")
 	flag.BoolVar(&ignoreLeadingBlanks, "ignore-leading-blanks", false, "Ignore leading whitespace")
 	flag.BoolVar(&ignoreLeadingBlanks, "ignore-leading-whitespace", false, "Ignore leading whitespace, same as --ignore-leading-blanks")
 	flag.Var(&key, "key", "Sort lines based on a particular field, see 'Key Specification' for details")
@@ -123,7 +125,7 @@ func main() {
 	var fd *os.File
 	if output != "" {
 		_, err := os.Stat(output)
-		if err == nil {
+		if err == nil && !forceOutput {
 			log.Fatal().Msgf("output file %s already exists", output)
 		}
 		fd, err = os.Create(output)
