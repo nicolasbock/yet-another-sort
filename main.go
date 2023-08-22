@@ -65,8 +65,8 @@ F1,F2  Use all fields between [F1,F2] for comparison
 	flag.Var(&key, "key", "Sort lines based on a particular field, see 'Key Specification' for details")
 	flag.IntVar(&multiline, "multiline", 1, "Combine multiple lines before sorting")
 	flag.StringVar(&output, "output", "", "Write output to file instead of standard out")
-	flag.BoolVar(&printVersion, "version", false, "Print version and exit")
 	flag.Var(&uniq, "uniq", "Uniq'ify the sorted multilines; keep [ \"first\", \"last\" ] of multiple identical lines")
+	flag.BoolVar(&printVersion, "version", false, "Print version and exit")
 
 	flag.StringVar(&cpuprofile, "cpuprofile", "", "Write cpu profile to file")
 	flag.StringVar(&memprofile, "memprofile", "", "write memory profile to file")
