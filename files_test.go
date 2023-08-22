@@ -51,6 +51,26 @@ func TestProcessInputFiles2(t *testing.T) {
 	compareContentTypes(got, expected, t)
 }
 
+func TestProcessInputFiles3(t *testing.T) {
+	var input []string = []string{
+		"Line one",
+		" Line two",
+		" Line three",
+		"Line four",
+	}
+	multiline = 2
+	var key KeyType = KeyType{
+		Type: SingleField,
+		Keys: []int{1},
+	}
+	var expected ContentType = ContentType{
+		{Lines: []string{"Line one", " Line two"}, Fields: []string{"Line", "one", "Line", "two"}, CompareLine: "Line"},
+		{Lines: []string{" Line three", "Line four"}, Fields: []string{"Line", "three", "Line", "four"}, CompareLine: "Line"},
+	}
+	var got ContentType = ProcessInputFiles(input, key)
+	compareContentTypes(got, expected, t)
+}
+
 // func TestProcessInputFiles3(t *testing.T) {
 	// var input []string = []string{
 		// "Line 1 a",

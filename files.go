@@ -48,7 +48,13 @@ func ProcessInputFiles(lines []string, key KeyType) ContentType {
 				break
 			}
 
-			var fields []string = strings.Split(lines[linenumber], fieldSeparator)
+			var rawFields []string = strings.Split(lines[linenumber], fieldSeparator)
+			var fields []string = []string{}
+			for _, field := range rawFields {
+				if len(field) > 0 {
+					fields = append(fields, field)
+				}
+			}
 			lastContentLine.Lines = append(lastContentLine.Lines, lines[linenumber])
 			lastContentLine.Fields = append(lastContentLine.Fields, fields...)
 		}
