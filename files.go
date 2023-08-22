@@ -74,6 +74,10 @@ func ProcessInputFiles(lines []string, key KeyType) ContentType {
 			lastContentLine.CompareLine = strings.Join(
 				lastContentLine.Fields[key.Keys[0]-1:key.Keys[1]], fieldSeparator)
 		}
+
+		if ignoreLeadingBlanks {
+			lastContentLine.CompareLine = strings.TrimLeft(lastContentLine.CompareLine, " \t")
+		}
 	}
 	return contents
 }

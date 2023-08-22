@@ -5,6 +5,8 @@ _complete_yet_another_sort () {
   local known_options=(
     --debug
     --field-separator
+    --ignore-leading-blanks
+    --ignore-leading-whitespace
     --key
     --multiline
     --uniq
