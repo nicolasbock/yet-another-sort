@@ -32,8 +32,35 @@ func TestKeyTypeString(t *testing.T) {
 	var kt KeyType = KeyType{
 		Type: NoKey,
 	}
-	var expected string = "whole line"
+	var expected string = "NoKey"
 	var got string = kt.String()
+	if strings.Compare(got, expected) != 0 {
+		t.Errorf("Expected\n%s\ngot\n%s", expected, got)
+	}
+	kt = KeyType{
+		Type: SingleField,
+		Keys: []int{1},
+	}
+	expected = "SingleField, [1]"
+	got = kt.String()
+	if strings.Compare(got, expected) != 0 {
+		t.Errorf("Expected\n%s\ngot\n%s", expected, got)
+	}
+	kt = KeyType{
+		Type: Remainder,
+		Keys: []int{1},
+	}
+	expected = "Remainder, [1]"
+	got = kt.String()
+	if strings.Compare(got, expected) != 0 {
+		t.Errorf("Expected\n%s\ngot\n%s", expected, got)
+	}
+	kt = KeyType{
+		Type: SubSet,
+		Keys: []int{1, 3},
+	}
+	expected = "SubSet, [1, 3]"
+	got = kt.String()
 	if strings.Compare(got, expected) != 0 {
 		t.Errorf("Expected\n%s\ngot\n%s", expected, got)
 	}

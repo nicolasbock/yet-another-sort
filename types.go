@@ -47,11 +47,7 @@ type KeyType struct {
 }
 
 func (k KeyType) String() string {
-	var result string
-	switch k.Type {
-	case NoKey:
-		result = "whole line"
-	}
+	var result string = k.Type.String()
 	if len(k.Keys) > 0 {
 		var keyStrings []string = []string{}
 		for _, key := range k.Keys {
