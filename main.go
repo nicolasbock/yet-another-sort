@@ -19,6 +19,7 @@ var cpuprofile string
 var debug bool
 var fieldSeparator string = " "
 var files []string = []string{}
+var ignoreLeadingBlanks bool
 var key KeyType = KeyType{}
 var memprofile string
 var multiline int = 1
@@ -59,6 +60,8 @@ F1,F2  Use all fields between [F1,F2] for comparison
 
 	flag.BoolVar(&debug, "debug", false, "Print debugging output")
 	flag.StringVar(&fieldSeparator, "field-separator", " ", "Use this field separator")
+	flag.BoolVar(&ignoreLeadingBlanks, "ignore-leading-blanks", false, "Ignore leading whitespace")
+	flag.BoolVar(&ignoreLeadingBlanks, "ignore-leading-whitespace", false, "Ignore leading whitespace, same as --ignore-leading-blanks")
 	flag.Var(&key, "key", "Sort lines based on a particular field, see 'Key Specification' for details")
 	flag.IntVar(&multiline, "multiline", 1, "Combine multiple lines before sorting")
 	flag.StringVar(&output, "output", "", "Write output to file instead of standard out")
