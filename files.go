@@ -12,9 +12,9 @@ import (
 // lines in that text file. The special filename `-` means standard input.
 func LoadFile(filename string) []string {
 	var lines []string = []string{}
-	log.Debug().Msgf("Loading contents of file %s", filename)
 	var fs *bufio.Scanner
 	if filename != "-" {
+		log.Debug().Msgf("Loading contents of file %s", filename)
 		fd, err := os.Open(filename)
 		if err != nil {
 			log.Fatal().Msgf("Error opening file %s: %s\n", filename, err.Error())
@@ -23,6 +23,7 @@ func LoadFile(filename string) []string {
 		defer fd.Close()
 		fs = bufio.NewScanner(fd)
 	} else {
+		log.Debug().Msgf("Reading from standard input")
 		fs = bufio.NewScanner(os.Stdin)
 	}
 	fs.Split(bufio.ScanLines)
