@@ -42,6 +42,8 @@ yet-another-sort interprets the input in 'multilines' which are line groupings o
 	#1692110033
 	yet-another-sort --multiline 2 --key 2,
 
+Note that when the --key option is used, multiple adjacent field-separators are treated as one separator, i.e. empty fields are ignored.
+
 Options:`)
 		flag.PrintDefaults()
 		fmt.Fprintln(flag.CommandLine.Output(), `
