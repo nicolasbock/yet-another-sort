@@ -46,3 +46,24 @@ func TestSort2(t *testing.T) {
 		t.Errorf("got %s\nexpected %s", got, expected)
 	}
 }
+
+func TestSort3(t *testing.T) {
+	var input ContentType = ContentType{
+		{Lines: []string{"line 1"}, Fields: []string{"line", "1"}, CompareLine: "line 1"},
+		{Lines: []string{"Line 2"}, Fields: []string{"Line", "2"}, CompareLine: "Line 2"},
+		{Lines: []string{"line 3"}, Fields: []string{"line", "3"}, CompareLine: "line 3"},
+		{Lines: []string{"Line 4"}, Fields: []string{"Line", "4"}, CompareLine: "Line 4"},
+		{Lines: []string{"line 5"}, Fields: []string{"line", "5"}, CompareLine: "line 5"},
+	}
+	var expectedCase ContentType = ContentType{
+		{Lines: []string{"Line 2"}, Fields: []string{"Line", "2"}, CompareLine: "Line 2"},
+		{Lines: []string{"Line 4"}, Fields: []string{"Line", "4"}, CompareLine: "Line 4"},
+		{Lines: []string{"line 1"}, Fields: []string{"line", "1"}, CompareLine: "line 1"},
+		{Lines: []string{"line 3"}, Fields: []string{"line", "3"}, CompareLine: "line 3"},
+		{Lines: []string{"line 5"}, Fields: []string{"line", "5"}, CompareLine: "line 5"},
+	}
+	var got ContentType = SortContents(input)
+	if !reflect.DeepEqual(got, expectedCase) {
+		t.Errorf("got\n%s\nexpected\n%s", got, expectedCase)
+	}
+}

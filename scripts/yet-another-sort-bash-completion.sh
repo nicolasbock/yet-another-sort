@@ -6,6 +6,7 @@ _complete_yet_another_sort () {
     --debug
     --field-separator
     --force
+    --ignore-case
     --ignore-leading-blanks
     --ignore-leading-whitespace
     --key
