@@ -1,7 +1,6 @@
 package main
 
 import (
-	"reflect"
 	"testing"
 )
 
@@ -17,7 +16,7 @@ func TestUniq1(t *testing.T) {
 	}
 	uniq = first
 	var got = UniqContents(input)
-	if !reflect.DeepEqual(got, expected) {
+	if !got.isEqual(expected) {
 		t.Errorf("got\n%s\nexpected\n%s", got, expected)
 	}
 }
@@ -33,7 +32,7 @@ func TestUniq2(t *testing.T) {
 	}
 	uniq = first
 	var got = UniqContents(input)
-	if !reflect.DeepEqual(got, expected) {
+	if !got.isEqual(expected) {
 		t.Errorf("got\n%s\nexpected\n%s", got, expected)
 	}
 }
@@ -50,7 +49,7 @@ func TestUniq3(t *testing.T) {
 	}
 	uniq = first
 	var got = UniqContents(input)
-	if !reflect.DeepEqual(got, expected) {
+	if !got.isEqual(expected) {
 		t.Errorf("got\n%s\nexpected\n%s", got, expected)
 	}
 }
@@ -66,7 +65,7 @@ func TestUniq4(t *testing.T) {
 	}
 	uniq = last
 	var got = UniqContents(input)
-	if !reflect.DeepEqual(got, expected) {
+	if !got.isEqual(expected) {
 		t.Errorf("got\n%s\nexpected\n%s", got, expected)
 	}
 }

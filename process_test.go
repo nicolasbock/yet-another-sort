@@ -1,15 +1,8 @@
 package main
 
 import (
-	"reflect"
 	"testing"
 )
-
-func compareContentTypes(a, b ContentType, t *testing.T) {
-	if !reflect.DeepEqual(a, b) {
-		t.Errorf("got\n%s\nexpected\n%s", a, b)
-	}
-}
 
 func TestProcessInputFiles1(t *testing.T) {
 	var input []string = []string{
@@ -29,7 +22,7 @@ func TestProcessInputFiles1(t *testing.T) {
 		{Lines: []string{"Line four"}, Fields: []string{"Line", "four"}, CompareLine: "Line four"},
 	}
 	var got ContentType = ProcessInputFiles(input, key)
-	if !reflect.DeepEqual(got, expected) {
+	if !got.isEqual(expected) {
 		t.Errorf("got\n%s\nexpected\n%s", got, expected)
 	}
 }
@@ -50,7 +43,7 @@ func TestProcessInputFiles2(t *testing.T) {
 		{Lines: []string{"Line three", "Line four"}, Fields: []string{"Line", "three", "Line", "four"}, CompareLine: "Line three Line four"},
 	}
 	var got ContentType = ProcessInputFiles(input, key)
-	if !reflect.DeepEqual(got, expected) {
+	if !got.isEqual(expected) {
 		t.Errorf("got\n%s\nexpected\n%s", got, expected)
 	}
 }
@@ -72,7 +65,7 @@ func TestProcessInputFiles3(t *testing.T) {
 		{Lines: []string{" Line three", "Line four"}, Fields: []string{"Line", "three", "Line", "four"}, CompareLine: "Line"},
 	}
 	var got ContentType = ProcessInputFiles(input, key)
-	if !reflect.DeepEqual(got, expected) {
+	if !got.isEqual(expected) {
 		t.Errorf("got\n%s\nexpected\n%s", got, expected)
 	}
 }
@@ -85,7 +78,7 @@ func TestProcessInputFiles4(t *testing.T) {
 		"Line 4",
 		"line 5",
 	}
-	var expectedCase ContentType = ContentType{
+	var expected ContentType = ContentType{
 		{Lines: []string{"line 1"}, Fields: []string{"line", "1"}, CompareLine: "line 1"},
 		{Lines: []string{"Line 2"}, Fields: []string{"Line", "2"}, CompareLine: "line 2"},
 		{Lines: []string{"line 3"}, Fields: []string{"line", "3"}, CompareLine: "line 3"},
@@ -96,7 +89,7 @@ func TestProcessInputFiles4(t *testing.T) {
 	multiline = 1
 	ignoreCase = true
 	var got ContentType = ProcessInputFiles(input, key)
-	if !reflect.DeepEqual(got, expectedCase) {
-		t.Errorf("got\n%s\nexpected\n%s", got, expectedCase)
+	if !got.isEqual(expected) {
+		t.Errorf("got\n%s\nexpected\n%s", got, expected)
 	}
 }

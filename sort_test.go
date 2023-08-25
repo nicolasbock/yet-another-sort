@@ -1,7 +1,6 @@
 package main
 
 import (
-	"reflect"
 	"testing"
 )
 
@@ -21,7 +20,7 @@ func TestSort1(t *testing.T) {
 		ContentLineType{Lines: []string{"5. Fifth line"}, Fields: []string{"5.", "Fifth", "line"}, CompareLine: "5. Fifth line"},
 	}
 	var got ContentType = SortContents(input)
-	if !reflect.DeepEqual(got, expected) {
+	if !got.isEqual(expected) {
 		t.Errorf("got %s\nexpected %s", got, expected)
 	}
 }
@@ -42,7 +41,7 @@ func TestSort2(t *testing.T) {
 		ContentLineType{Lines: []string{"5. Fifth line"}, Fields: []string{"5.", "Fifth", "line"}, CompareLine: "5."},
 	}
 	var got ContentType = SortContents(input)
-	if !reflect.DeepEqual(got, expected) {
+	if !got.isEqual(expected) {
 		t.Errorf("got %s\nexpected %s", got, expected)
 	}
 }
@@ -63,7 +62,7 @@ func TestSort3(t *testing.T) {
 		{Lines: []string{"line 5"}, Fields: []string{"line", "5"}, CompareLine: "line 5"},
 	}
 	var got ContentType = SortContents(input)
-	if !reflect.DeepEqual(got, expectedCase) {
+	if !got.isEqual(expectedCase) {
 		t.Errorf("got\n%s\nexpected\n%s", got, expectedCase)
 	}
 }
