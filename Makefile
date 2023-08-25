@@ -7,6 +7,10 @@ yet-another-sort:
 test:
 	go test -v
 
+.PHONY: coverage
+coverage:
+	go test -cover -v
+
 TEST_FIELDS = 4
 TEST_FIELD_LENGTH = 5
 TIME = time --format '%Uu %Ss %er %MkB %C'
