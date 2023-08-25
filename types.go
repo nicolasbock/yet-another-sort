@@ -128,6 +128,29 @@ func (l ContentLineType) String() string {
 	return result
 }
 
+func (a ContentLineType) isEqual(b ContentLineType) bool {
+	if len(a.Lines) != len(b.Lines) {
+		return false
+	}
+	if len(a.Fields) != len(b.Fields) {
+		return false
+	}
+	for i := range a.Lines {
+		if a.Lines[i] != b.Lines[i] {
+			return false
+		}
+	}
+	for i := range a.Fields {
+		if a.Fields[i] != b.Fields[i] {
+			return false
+		}
+	}
+	if a.CompareLine != b.CompareLine {
+		return false
+	}
+	return true
+}
+
 type ContentType []ContentLineType
 
 func (c ContentType) String() string {
@@ -137,6 +160,18 @@ func (c ContentType) String() string {
 		result += fmt.Sprintf("%s\n", line)
 	}
 	return strings.Trim(result, "\n")
+}
+
+func (a ContentType) isEqual(b ContentType) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for i := range a {
+		if !a[i].isEqual(b[i]) {
+			return false
+		}
+	}
+	return true
 }
 
 type UniqMode int
@@ -169,6 +204,35 @@ func (um *UniqMode) Set(s string) error {
 		*um = last
 	default:
 		return fmt.Errorf("unknown value %s for UniqMode", s)
+	}
+	return nil
+}
+
+type SortMode int
+
+const (
+	bubble = iota
+	merge
+)
+
+func (sm SortMode) String() string {
+	switch sm {
+	case bubble:
+		return "bubble sort"
+	case merge:
+		return "merge sort"
+	}
+	return "FIXME"
+}
+
+func (sm *SortMode) Set(s string) error {
+	switch s {
+	case "bubble":
+		*sm = bubble
+	case "merge":
+		*sm = merge
+	default:
+		return fmt.Errorf("unknown value %s for SortMode", s)
 	}
 	return nil
 }

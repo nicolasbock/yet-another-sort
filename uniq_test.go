@@ -19,6 +19,9 @@ func TestUniq1(t *testing.T) {
 	if !got.isEqual(expected) {
 		t.Errorf("got\n%s\nexpected\n%s", got, expected)
 	}
+	if input.isEqual(got) {
+		t.Errorf("the input was modified")
+	}
 }
 
 func TestUniq2(t *testing.T) {
@@ -34,6 +37,9 @@ func TestUniq2(t *testing.T) {
 	var got = UniqContents(input)
 	if !got.isEqual(expected) {
 		t.Errorf("got\n%s\nexpected\n%s", got, expected)
+	}
+	if input.isEqual(got) {
+		t.Errorf("the input was modified")
 	}
 }
 
@@ -52,6 +58,9 @@ func TestUniq3(t *testing.T) {
 	if !got.isEqual(expected) {
 		t.Errorf("got\n%s\nexpected\n%s", got, expected)
 	}
+	if input.isEqual(got) {
+		t.Errorf("the input was modified")
+	}
 }
 
 func TestUniq4(t *testing.T) {
@@ -67,5 +76,8 @@ func TestUniq4(t *testing.T) {
 	var got = UniqContents(input)
 	if !got.isEqual(expected) {
 		t.Errorf("got\n%s\nexpected\n%s", got, expected)
+	}
+	if input.isEqual(got) {
+		t.Errorf("the input was modified")
 	}
 }

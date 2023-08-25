@@ -133,3 +133,69 @@ func TestUniqModeString(t *testing.T) {
 		t.Errorf("Expected\n%s\ngot\n%s", expected, got)
 	}
 }
+
+func TestIsEqualContentTypeLine(t *testing.T) {
+	var a ContentLineType = ContentLineType{
+		Lines:       []string{"Line", "another line", "third line"},
+		Fields:      []string{"Line", "another", "line", "third", "line"},
+		CompareLine: "Line another line",
+	}
+	var b ContentLineType = ContentLineType{
+		Lines:       append([]string{}, a.Lines...),
+		Fields:      append([]string{}, a.Fields...),
+		CompareLine: a.CompareLine,
+	}
+	if !a.isEqual(b) {
+		t.Errorf("%s\nis not equal to\n%s", a, b)
+	}
+}
+
+func TestIsEqualContentType(t *testing.T) {
+	var a ContentType = []ContentLineType{
+		{
+			Lines:       []string{"Line", "another line", "third line"},
+			Fields:      []string{"Line", "another", "line", "third", "line"},
+			CompareLine: "Line another line",
+		},
+		{
+			Lines:       []string{"Line", "another line", "third line"},
+			Fields:      []string{"Line", "another", "line", "third", "line"},
+			CompareLine: "Line another line",
+		},
+	}
+	var b ContentType = []ContentLineType{
+		{
+			Lines:       append([]string{}, a[0].Lines...),
+			Fields:      append([]string{}, a[0].Fields...),
+			CompareLine: a[0].CompareLine,
+		},
+		{
+			Lines:       append([]string{}, a[1].Lines...),
+			Fields:      append([]string{}, a[1].Fields...),
+			CompareLine: a[1].CompareLine,
+		},
+	}
+	if !a.isEqual(b) {
+		t.Errorf("%s\nis not equal to\n%s", a, b)
+	}
+}
+
+func TestSortModeString(t *testing.T) {
+	var sm SortMode
+	var expected = "bubble sort"
+	var got string = sm.String()
+	if strings.Compare(got, expected) != 0 {
+		t.Errorf("Expected %s got %s", expected, got)
+	}
+	sm = bubble
+	got = sm.String()
+	if strings.Compare(got, expected) != 0 {
+		t.Errorf("Expected %s got %s", expected, got)
+	}
+	sm = merge
+	expected = "merge sort"
+	got = sm.String()
+	if strings.Compare(got, expected) != 0 {
+		t.Errorf("Expected %s got %s", expected, got)
+	}
+}

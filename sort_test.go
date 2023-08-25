@@ -19,9 +19,21 @@ func TestSort1(t *testing.T) {
 		ContentLineType{Lines: []string{"4. Fourth line"}, Fields: []string{"4.", "Fourth", "line"}, CompareLine: "4. Fourth line"},
 		ContentLineType{Lines: []string{"5. Fifth line"}, Fields: []string{"5.", "Fifth", "line"}, CompareLine: "5. Fifth line"},
 	}
-	var got ContentType = SortContents(input)
-	if !got.isEqual(expected) {
+	var got ContentType
+	got = SortContents(input)
+	if !expected.isEqual(got) {
 		t.Errorf("got %s\nexpected %s", got, expected)
+	}
+	if input.isEqual(got) {
+		t.Errorf("input list was modified during sort")
+	}
+	sortMode = merge
+	got = SortContents(input)
+	if !expected.isEqual(got) {
+		t.Errorf("got %s\nexpected %s", got, expected)
+	}
+	if input.isEqual(got) {
+		t.Errorf("input list was modified during sort")
 	}
 }
 
@@ -41,8 +53,19 @@ func TestSort2(t *testing.T) {
 		ContentLineType{Lines: []string{"5. Fifth line"}, Fields: []string{"5.", "Fifth", "line"}, CompareLine: "5."},
 	}
 	var got ContentType = SortContents(input)
-	if !got.isEqual(expected) {
+	if !expected.isEqual(got) {
 		t.Errorf("got %s\nexpected %s", got, expected)
+	}
+	if input.isEqual(got) {
+		t.Errorf("input list was modified during sort")
+	}
+	sortMode = merge
+	got = SortContents(input)
+	if !expected.isEqual(got) {
+		t.Errorf("got %s\nexpected %s", got, expected)
+	}
+	if input.isEqual(got) {
+		t.Errorf("input list was modified during sort")
 	}
 }
 
@@ -54,7 +77,7 @@ func TestSort3(t *testing.T) {
 		{Lines: []string{"Line 4"}, Fields: []string{"Line", "4"}, CompareLine: "Line 4"},
 		{Lines: []string{"line 5"}, Fields: []string{"line", "5"}, CompareLine: "line 5"},
 	}
-	var expectedCase ContentType = ContentType{
+	var expected ContentType = ContentType{
 		{Lines: []string{"Line 2"}, Fields: []string{"Line", "2"}, CompareLine: "Line 2"},
 		{Lines: []string{"Line 4"}, Fields: []string{"Line", "4"}, CompareLine: "Line 4"},
 		{Lines: []string{"line 1"}, Fields: []string{"line", "1"}, CompareLine: "line 1"},
@@ -62,7 +85,18 @@ func TestSort3(t *testing.T) {
 		{Lines: []string{"line 5"}, Fields: []string{"line", "5"}, CompareLine: "line 5"},
 	}
 	var got ContentType = SortContents(input)
-	if !got.isEqual(expectedCase) {
-		t.Errorf("got\n%s\nexpected\n%s", got, expectedCase)
+	if !expected.isEqual(got) {
+		t.Errorf("got\n%s\nexpected\n%s", got, expected)
+	}
+	if input.isEqual(got) {
+		t.Errorf("input list was modified during sort")
+	}
+	sortMode = merge
+	got = SortContents(input)
+	if !expected.isEqual(got) {
+		t.Errorf("got\n%s\nexpected\n%s", got, expected)
+	}
+	if input.isEqual(got) {
+		t.Errorf("input list was modified during sort")
 	}
 }

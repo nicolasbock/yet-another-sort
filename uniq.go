@@ -6,6 +6,10 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+// UniqContents compares adjacent entries in contents and keeps only the first
+// or the last of identical entries.
+//
+// The uniq operations is not done in place. A copy of the uniqified ContentType is returned.
 func UniqContents(contents ContentType) ContentType {
 	var result ContentType = append(ContentType{}, contents...)
 	if uniq != none {

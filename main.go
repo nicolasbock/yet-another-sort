@@ -27,6 +27,7 @@ var memprofile string
 var multiline int = 1
 var output string
 var printVersion bool
+var sortMode SortMode
 var uniq UniqMode
 
 // parseCommandLine initializes the argument parser and parses the command line.
@@ -71,6 +72,7 @@ F1,F2  Use all fields between [F1,F2] for comparison
 	flag.StringVar(&output, "output", "", "Write output to file instead of standard out")
 	flag.Var(&uniq, "uniq", "Uniq'ify the sorted multilines; keep [ \"first\", \"last\" ] of multiple identical lines")
 	flag.BoolVar(&printVersion, "version", false, "Print version and exit")
+	flag.Var(&sortMode, "sort-mode", "Choose sorting algorithm; [ \"bubble\", \"merge\" ]")
 
 	flag.StringVar(&cpuprofile, "cpuprofile", "", "Write cpu profile to file")
 	flag.StringVar(&memprofile, "memprofile", "", "write memory profile to file")
