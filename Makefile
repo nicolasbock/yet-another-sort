@@ -1,5 +1,5 @@
 .PHONY: yet-another-sort
-yet-another-sort:
+yet-another-sort: *.go
 	$(eval VERSION=$(shell git describe --tags))
 	go build -v -ldflags "-X main.Version=$(VERSION)"
 
