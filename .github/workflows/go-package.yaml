@@ -41,3 +41,11 @@ jobs:
 
       - name: Coverage
         run: make coverage
+
+      - name: Functional test
+        run: |
+          set -e -u -x
+          ./scripts/generate-random-input-file.py --lines 10 --fields 10 --field-length 4 > input
+          sort input > sort.output
+          ./yet-another-sort input > yas.output
+          diff -Naur sort.output yas.output
