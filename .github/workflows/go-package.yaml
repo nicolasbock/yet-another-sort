@@ -54,10 +54,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: functional test input
-          path: input
-
-      - name: Upload artifacts (sort output)
-        uses: actions/upload-artifact@v3
-        with:
-          name: functional test output
-          path: *.output
+          path: |
+            input
+            sort.output
+            yas.output
