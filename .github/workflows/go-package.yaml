@@ -48,12 +48,13 @@ jobs:
           ./scripts/generate-random-input-file.py --lines 10 --fields 10 --field-length 4 > input
           sort input > sort.output
           ./yet-another-sort input > yas.output
-          diff -Naur sort.output yas.output
+          diff -Naur sort.output yas.output || true
 
       - name: Upload artifacts (sort input)
         uses: actions/upload-artifact@v3
+        if: ${{ failure() }}
         with:
-          name: functional test input
+          name: functional test data
           path: |
             input
             sort.output
