@@ -46,6 +46,7 @@ jobs:
         run: |
           set -e -u -x
           ./scripts/generate-random-input-file.py --lines 10 --fields 10 --field-length 4 > input
+          cat input
           sort input > sort.output
           ./yet-another-sort input > yas.output
           diff -Naur sort.output yas.output || true
