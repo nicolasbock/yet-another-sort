@@ -20,20 +20,16 @@ func TestSort1(t *testing.T) {
 		ContentLineType{Lines: []string{"5. Fifth line"}, Fields: []string{"5.", "Fifth", "line"}, CompareLine: "5. Fifth line"},
 	}
 	var got ContentType
-	got = SortContents(input)
-	if !expected.isEqual(got) {
-		t.Errorf("got %s\nexpected %s", got, expected)
-	}
-	if input.isEqual(got) {
-		t.Errorf("input list was modified during sort")
-	}
-	sortMode = merge
-	got = SortContents(input)
-	if !expected.isEqual(got) {
-		t.Errorf("got %s\nexpected %s", got, expected)
-	}
-	if input.isEqual(got) {
-		t.Errorf("input list was modified during sort")
+	for i := 0; i < 2; i++ {
+		sortMode = SortMode(i)
+
+		got = SortContents(input)
+		if !expected.isEqual(got) {
+			t.Errorf("got %s\nexpected %s", got, expected)
+		}
+		if input.isEqual(got) {
+			t.Errorf("input list was modified during sort")
+		}
 	}
 }
 
@@ -52,20 +48,16 @@ func TestSort2(t *testing.T) {
 		ContentLineType{Lines: []string{"4. Fourth line"}, Fields: []string{"4.", "Fourth", "line"}, CompareLine: "4."},
 		ContentLineType{Lines: []string{"5. Fifth line"}, Fields: []string{"5.", "Fifth", "line"}, CompareLine: "5."},
 	}
-	var got ContentType = SortContents(input)
-	if !expected.isEqual(got) {
-		t.Errorf("got %s\nexpected %s", got, expected)
-	}
-	if input.isEqual(got) {
-		t.Errorf("input list was modified during sort")
-	}
-	sortMode = merge
-	got = SortContents(input)
-	if !expected.isEqual(got) {
-		t.Errorf("got %s\nexpected %s", got, expected)
-	}
-	if input.isEqual(got) {
-		t.Errorf("input list was modified during sort")
+	var got ContentType
+	for i := 0; i < 2; i++ {
+		sortMode = SortMode(i)
+		got = SortContents(input)
+		if !expected.isEqual(got) {
+			t.Errorf("got %s\nexpected %s", got, expected)
+		}
+		if input.isEqual(got) {
+			t.Errorf("input list was modified during sort")
+		}
 	}
 }
 
@@ -84,19 +76,15 @@ func TestSort3(t *testing.T) {
 		{Lines: []string{"line 3"}, Fields: []string{"line", "3"}, CompareLine: "line 3"},
 		{Lines: []string{"line 5"}, Fields: []string{"line", "5"}, CompareLine: "line 5"},
 	}
-	var got ContentType = SortContents(input)
-	if !expected.isEqual(got) {
-		t.Errorf("got\n%s\nexpected\n%s", got, expected)
-	}
-	if input.isEqual(got) {
-		t.Errorf("input list was modified during sort")
-	}
-	sortMode = merge
-	got = SortContents(input)
-	if !expected.isEqual(got) {
-		t.Errorf("got\n%s\nexpected\n%s", got, expected)
-	}
-	if input.isEqual(got) {
-		t.Errorf("input list was modified during sort")
+	var got ContentType
+	for i := 0; i < 2; i++ {
+		sortMode = SortMode(i)
+		got = SortContents(input)
+		if !expected.isEqual(got) {
+			t.Errorf("got\n%s\nexpected\n%s", got, expected)
+		}
+		if input.isEqual(got) {
+			t.Errorf("input list was modified during sort")
+		}
 	}
 }
