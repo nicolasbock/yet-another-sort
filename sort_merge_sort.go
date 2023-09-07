@@ -74,7 +74,5 @@ func mergeContents(a, b ContentType, iBegin, iMiddle, iEnd int) {
 // copySublist copies [iBeing:iEnd) from a into b.
 func copySublist(a, b ContentType, iBegin, iEnd int) {
 	// fmt.Printf("[copySublist] updated b[%d:%d]\n", iBegin, iEnd)
-	for i := range a {
-		b[i] = a[i]
-	}
+	copy(b[iBegin:iEnd], a[iBegin:iEnd])
 }
