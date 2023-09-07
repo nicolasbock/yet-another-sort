@@ -3,6 +3,10 @@ yet-another-sort: *.go
 	$(eval VERSION=$(shell git describe --tags))
 	go build -v -ldflags "-X main.Version=$(VERSION)"
 
+.PHONY: clean
+clean:
+	rm --verbose yet-another-sort
+
 .PHONY: test
 test:
 	go test -v
