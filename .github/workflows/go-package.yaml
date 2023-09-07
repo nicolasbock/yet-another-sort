@@ -36,6 +36,9 @@ jobs:
           gofmt -w *.go
           (( $(git diff | wc -l) == 0 )) || false
 
+      - name: Go vet
+        run: go vet
+
       - name: Test
         run: make test
 

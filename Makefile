@@ -9,7 +9,7 @@ clean:
 
 .PHONY: test
 test:
-	go test -v
+	go test -v -cpuprofile
 
 .PHONY: coverage
 coverage:
