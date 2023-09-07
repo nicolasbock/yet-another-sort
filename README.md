@@ -70,6 +70,6 @@ ls
 The program can also be installed via a regular Ubuntu package:
 
 ```console
-$ sudo add-apt-repository ppa:nicolasbock/yet-another-sort
-$ sudo apt install yet-another-sort
+sudo add-apt-repository ppa:nicolasbock/yet-another-sort
+sudo apt install yet-another-sort
 ```
