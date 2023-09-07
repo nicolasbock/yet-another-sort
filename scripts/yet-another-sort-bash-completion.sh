@@ -12,6 +12,7 @@ _complete_yet_another_sort () {
     --key
     --multiline
     --output
+    --sort-mode
     --uniq
     --version
     -h --help
@@ -24,8 +25,13 @@ _complete_yet_another_sort () {
       _filedir
       return
       ;;
+    --sort-mode)
+      readarray -t COMPREPLY < <(compgen -W 'bubble merge' -- "${cur}")
+      return
+      ;;
     --uniq)
       readarray -t COMPREPLY < <(compgen -W 'first last' -- "${cur}")
+      return
       ;;
   esac
 
