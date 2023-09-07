@@ -4,8 +4,6 @@ A sort util that mimics the functionality of GNU `sort`
 
 [![Build and test](https://github.com/nicolasbock/yet-another-sort/actions/workflows/go-package.yaml/badge.svg)](https://github.com/nicolasbock/yet-another-sort/actions/workflows/go-package.yaml)
 
-[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/yet-another-sort)
-
 ## Introduction
 
 This project leans heavily on, and aspires to eventually reach full feature
@@ -63,4 +61,15 @@ git status
 history
 #1692484737
 ls
+```
+
+## Installation
+
+[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/yet-another-sort)
+
+The program can also be installed via a regular Ubuntu package:
+
+```console
+$ sudo add-apt-repository ppa:nicolasbock/yet-another-sort
+$ sudo apt install yet-another-sort
 ```
