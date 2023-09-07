@@ -177,15 +177,15 @@ func (a ContentType) isEqual(b ContentType) bool {
 type UniqMode int
 
 const (
-	none UniqMode = iota
+	no_uniq UniqMode = iota
 	first
 	last
 )
 
 func (um UniqMode) String() string {
 	switch um {
-	case none:
-		return "none"
+	case no_uniq:
+		return "no uniq"
 	case first:
 		return "first"
 	case last:
@@ -197,7 +197,9 @@ func (um UniqMode) String() string {
 func (um *UniqMode) Set(s string) error {
 	switch s {
 	case "none":
-		*um = none
+		*um = no_uniq
+	case "no uniq":
+		*um = no_uniq
 	case "first":
 		*um = first
 	case "last":

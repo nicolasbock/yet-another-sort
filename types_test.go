@@ -115,7 +115,7 @@ func TestContentLineTypeString(t *testing.T) {
 
 func TestUniqModeString(t *testing.T) {
 	var um UniqMode
-	var expected = "none"
+	var expected = "no uniq"
 	var got string = um.String()
 	if strings.Compare(got, expected) != 0 {
 		t.Errorf("Expected\n%s\ngot\n%s", expected, got)
