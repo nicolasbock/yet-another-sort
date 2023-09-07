@@ -12,7 +12,7 @@ import (
 // The uniq operations is not done in place. A copy of the uniqified ContentType is returned.
 func UniqContents(contents ContentType) ContentType {
 	var result ContentType = append(ContentType{}, contents...)
-	if uniq != none {
+	if uniq != no_uniq {
 		for i := 0; ; {
 			if i == len(result)-1 {
 				break
