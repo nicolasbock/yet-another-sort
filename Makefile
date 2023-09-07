@@ -9,7 +9,7 @@ clean:
 
 .PHONY: test
 test:
-	go test -v -cpuprofile
+	go test -v
 
 .PHONY: coverage
 coverage:
@@ -58,6 +58,7 @@ benchmark-merge: yet-another-sort
 	$(eval INFILE=$(shell mktemp))
 	$(eval OUTFILE=$(shell mktemp))
 	$(eval REFERENCE=$(shell mktemp))
+	$(eval CPUPROFILE=$(shell mktemp))
 	./scripts/generate-random-input-file.py --lines 2000 --fields $(TEST_FIELDS) --field-length $(TEST_FIELD_LENGTH) > $(INFILE)
 	@$(TIME) ./yet-another-sort --sort-mode merge $(INFILE) > $(OUTFILE)-merge
 	@$(TIME) ./yet-another-sort --sort-mode merge $(INFILE) > $(OUTFILE)-merge
@@ -80,9 +81,9 @@ benchmark-merge: yet-another-sort
 	@$(TIME) sort $(INFILE) > $(REFERENCE)
 	@$(TIME) sort $(INFILE) > $(REFERENCE)
 	./scripts/generate-random-input-file.py --lines 32000 --fields $(TEST_FIELDS) --field-length $(TEST_FIELD_LENGTH) > $(INFILE)
-	@$(TIME) ./yet-another-sort --sort-mode merge $(INFILE) > $(OUTFILE)-merge
-	@$(TIME) ./yet-another-sort --sort-mode merge $(INFILE) > $(OUTFILE)-merge
-	@$(TIME) ./yet-another-sort --sort-mode merge $(INFILE) > $(OUTFILE)-merge
+	@$(TIME) ./yet-another-sort --sort-mode merge --cpuprofile ${CPUPROFILE} $(INFILE) > $(OUTFILE)-merge
+	@$(TIME) ./yet-another-sort --sort-mode merge --cpuprofile ${CPUPROFILE} $(INFILE) > $(OUTFILE)-merge
+	@$(TIME) ./yet-another-sort --sort-mode merge --cpuprofile ${CPUPROFILE} $(INFILE) > $(OUTFILE)-merge
 	@$(TIME) sort $(INFILE) > $(REFERENCE)
 	@$(TIME) sort $(INFILE) > $(REFERENCE)
 	@$(TIME) sort $(INFILE) > $(REFERENCE)
