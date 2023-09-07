@@ -67,7 +67,8 @@ ls
 
 [![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/yet-another-sort)
 
-The program can also be installed via a regular Ubuntu package:
+The program can also be installed via a regular Ubuntu package (on `Jammy`,
+`Lunar`, or `Mantic`):
 
 ```console
 sudo add-apt-repository ppa:nicolasbock/yet-another-sort
