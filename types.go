@@ -213,8 +213,8 @@ func (um *UniqMode) Set(s string) error {
 type SortMode int
 
 const (
-	bubble = iota
-	merge
+	merge = iota
+	bubble
 )
 
 func (sm SortMode) String() string {

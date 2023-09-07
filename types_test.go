@@ -182,12 +182,13 @@ func TestIsEqualContentType(t *testing.T) {
 
 func TestSortModeString(t *testing.T) {
 	var sm SortMode
-	var expected = "bubble sort"
+	var expected = "merge sort"
 	var got string = sm.String()
 	if strings.Compare(got, expected) != 0 {
 		t.Errorf("Expected %s got %s", expected, got)
 	}
 	sm = bubble
+	expected = "bubble sort"
 	got = sm.String()
 	if strings.Compare(got, expected) != 0 {
 		t.Errorf("Expected %s got %s", expected, got)
