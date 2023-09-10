@@ -1,14 +1,5 @@
 package main
 
-import (
-	/*
-		#include <stdlib.h>
-		#include <string.h>
-	*/
-	"C"
-	"unsafe"
-)
-
 // mergeSort sorts contents using merge sort [1].
 //
 // Sorting is not done in place. A copy of the sorted ContentType is returned.
@@ -50,14 +41,12 @@ func mergeContents(a, b ContentType, iBegin, iMiddle, iEnd int) {
 	for k := iBegin; k < iEnd; k++ {
 		// fmt.Printf("[mergeContents] [%d:%d:%d], comparing i = %d with j = %d, storing in k = %d, ", iBegin, iMiddle, iEnd, i, j, k)
 		if i < iMiddle && j < iEnd {
-			var bStringAtJ = C.CString(b[j].CompareLine)
-			var bStringAtI = C.CString(b[i].CompareLine)
-			defer C.free(unsafe.Pointer(bStringAtJ))
-			defer C.free(unsafe.Pointer(bStringAtI))
+			var bStringAtJ = b[j].CompareLine
+			var bStringAtI = b[i].CompareLine
 
-			var comparison = int(C.strcoll(bStringAtI, bStringAtJ))
+			var comparison = bStringAtI > bStringAtJ
 			// fmt.Printf("comparison = %d, ", comparison)
-			if comparison > 0 {
+			if comparison {
 				// fmt.Printf("storing a[%d] <- b[%d]\n", k, j)
 				a[k] = b[j]
 				j++
