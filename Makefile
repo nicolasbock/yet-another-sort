@@ -87,6 +87,13 @@ benchmark-merge: yet-another-sort
 	@$(TIME) sort $(INFILE) > $(REFERENCE)
 	@$(TIME) sort $(INFILE) > $(REFERENCE)
 	@$(TIME) sort $(INFILE) > $(REFERENCE)
+	./scripts/generate-random-input-file.py --lines 64000 --fields $(TEST_FIELDS) --field-length $(TEST_FIELD_LENGTH) > $(INFILE)
+	@$(TIME) ./yet-another-sort --sort-mode merge $(INFILE) > $(OUTFILE)-merge
+	@$(TIME) ./yet-another-sort --sort-mode merge $(INFILE) > $(OUTFILE)-merge
+	@$(TIME) ./yet-another-sort --sort-mode merge $(INFILE) > $(OUTFILE)-merge
+	@$(TIME) sort $(INFILE) > $(REFERENCE)
+	@$(TIME) sort $(INFILE) > $(REFERENCE)
+	@$(TIME) sort $(INFILE) > $(REFERENCE)
 	./scripts/generate-random-input-file.py --lines 1024000 --fields $(TEST_FIELDS) --field-length $(TEST_FIELD_LENGTH) > $(INFILE)
 	@$(TIME) ./yet-another-sort --sort-mode merge --cpuprofile ${CPUPROFILE} $(INFILE) > $(OUTFILE)-merge
 	@$(TIME) ./yet-another-sort --sort-mode merge --cpuprofile ${CPUPROFILE} $(INFILE) > $(OUTFILE)-merge
