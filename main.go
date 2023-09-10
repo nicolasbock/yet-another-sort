@@ -49,7 +49,7 @@ yet-another-sort interprets the input in 'multilines' which are line groupings o
 Note that when the --key option is used, multiple adjacent field-separators are treated as one separator, i.e. empty fields are ignored.
 
 Options:`)
-    fmt.Fprintln(flag.CommandLine.Output())
+		fmt.Fprintln(flag.CommandLine.Output())
 		flag.PrintDefaults()
 		fmt.Fprintln(flag.CommandLine.Output(), `
 Key Specification:
