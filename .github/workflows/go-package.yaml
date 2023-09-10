@@ -52,7 +52,7 @@ jobs:
           cat input
           sort --ignore-case input > sort.output
           ./yet-another-sort --ignore-case input > yas.output
-          diff -Naur sort.output yas.output || true
+          diff -Naur sort.output yas.output
 
       - name: Upload artifacts (sort input)
         uses: actions/upload-artifact@v3
