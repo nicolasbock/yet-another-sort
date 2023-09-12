@@ -8,7 +8,7 @@ icon: sort-icon.png
 
 summary: A sort util that mimics the functionality of GNU `sort`
 description: |
-  **Introction**
+  **Introduction**
 
   This project leans heavily on, and aspires to eventually reach full feature
   parity with, GNU `sort`. The goal of this project is to experiment with
