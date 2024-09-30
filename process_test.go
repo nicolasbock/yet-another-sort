@@ -93,3 +93,19 @@ func TestProcessInputFiles4(t *testing.T) {
 		t.Errorf("got\n%s\nexpected\n%s", got, expected)
 	}
 }
+
+func TestProcessInputFiles5(t *testing.T) {
+	var input []string = []string{
+		"#1727714684",
+		"gh pr create --assignee nicolasbock --fill",
+		"#1714578836",
+		"gh pr create --assignee nicolasbock --fill",
+	}
+	var expected ContentType = ContentType{}
+	var key = KeyType{}
+	multiline = 2
+	var got ContentType = ProcessInputFiles(input, key)
+	if !got.isEqual(expected) {
+		t.Errorf("got\n%s\nexpected\n%s", got, expected)
+	}
+}
