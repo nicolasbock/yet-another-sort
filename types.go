@@ -145,10 +145,7 @@ func (a ContentLineType) isEqual(b ContentLineType) bool {
 			return false
 		}
 	}
-	if a.CompareLine != b.CompareLine {
-		return false
-	}
-	return true
+	return a.CompareLine == b.CompareLine
 }
 
 type ContentType []ContentLineType

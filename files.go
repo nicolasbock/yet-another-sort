@@ -40,6 +40,6 @@ func LoadInputFiles(filenames []string, key KeyType) ContentType {
 		lines = append(lines, LoadFile(file)...)
 	}
 	contents = ProcessInputFiles(lines, key)
-	log.Debug().Msgf("Read %d files", len(files))
+	log.Debug().Msgf("Read %d files", len(options.files))
 	return contents
 }
