@@ -1,8 +1,15 @@
 package main
 
 import (
+	"os"
 	"testing"
 )
+
+func TestMain(m *testing.M) {
+	options = NewConfigurationOptions()
+	exitCode := m.Run()
+	os.Exit(exitCode)
+}
 
 func TestProcessInputFiles1(t *testing.T) {
 	var input []string = []string{
@@ -11,7 +18,7 @@ func TestProcessInputFiles1(t *testing.T) {
 		"Line three",
 		"Line four",
 	}
-	multiline = 1
+	options.multiline = 1
 	var key KeyType = KeyType{
 		Type: NoKey,
 	}
@@ -34,7 +41,7 @@ func TestProcessInputFiles2(t *testing.T) {
 		"Line three",
 		"Line four",
 	}
-	multiline = 2
+	options.multiline = 2
 	var key KeyType = KeyType{
 		Type: NoKey,
 	}
@@ -55,7 +62,7 @@ func TestProcessInputFiles3(t *testing.T) {
 		" Line three",
 		"Line four",
 	}
-	multiline = 2
+	options.multiline = 2
 	var key KeyType = KeyType{
 		Type: SingleField,
 		Keys: []int{1},
@@ -86,8 +93,8 @@ func TestProcessInputFiles4(t *testing.T) {
 		{Lines: []string{"line 5"}, Fields: []string{"line", "5"}, CompareLine: "line 5"},
 	}
 	var key = KeyType{}
-	multiline = 1
-	ignoreCase = true
+	options.multiline = 1
+	options.ignoreCase = true
 	var got ContentType = ProcessInputFiles(input, key)
 	if !got.isEqual(expected) {
 		t.Errorf("got\n%s\nexpected\n%s", got, expected)

@@ -15,20 +15,32 @@ import (
 var Version = "unknown"
 
 // Configuration options.
-var cpuprofile string
-var debug bool
-var fieldSeparator string = " "
-var files []string = []string{}
-var forceOutput bool
-var ignoreCase bool
-var ignoreLeadingBlanks bool
-var key KeyType
-var memprofile string
-var multiline int = 1
-var output string
-var printVersion bool
-var sortMode SortMode
-var uniq UniqMode
+type ConfigurationOptions struct {
+	cpuprofile          string
+	debug               bool
+	fieldSeparator      string
+	files               []string
+	forceOutput         bool
+	ignoreCase          bool
+	ignoreLeadingBlanks bool
+	key                 KeyType
+	memprofile          string
+	multiline           int
+	output              string
+	printVersion        bool
+	sortMode            SortMode
+	uniq                UniqMode
+}
+
+func NewConfigurationOptions() ConfigurationOptions {
+	return ConfigurationOptions{
+		fieldSeparator: " ",
+		files:          []string{},
+		multiline:      1,
+	}
+}
+
+var options = NewConfigurationOptions()
 
 // parseCommandLine initializes the argument parser and parses the command line.
 func parseCommandLine() {
@@ -62,32 +74,32 @@ F1,F2  Use all fields between [F1,F2] for comparison
 		`)
 	}
 
-	flag.BoolVar(&debug, "debug", false, "Print debugging output")
-	flag.StringVar(&fieldSeparator, "field-separator", " ", "Use this field separator")
-	flag.BoolVar(&forceOutput, "force", false, "Overwrite output file if it exists")
-	flag.BoolVar(&ignoreCase, "ignore-case", false, "Ignore case for comparisons")
-	flag.BoolVar(&ignoreLeadingBlanks, "ignore-leading-blanks", false, "Ignore leading whitespace")
-	flag.BoolVar(&ignoreLeadingBlanks, "ignore-leading-whitespace", false, "Ignore leading whitespace, same as --ignore-leading-blanks")
-	flag.Var(&key, "key", "Sort lines based on a particular field, see 'Key Specification' for details")
-	flag.IntVar(&multiline, "multiline", 1, "Combine multiple lines before sorting")
-	flag.StringVar(&output, "output", "", "Write output to file instead of standard out")
-	flag.Var(&uniq, "uniq", fmt.Sprintf("Uniq'ify the sorted multilines; keep [ \"first\", \"last\" ] of multiple identical lines; default = %s", uniq))
-	flag.BoolVar(&printVersion, "version", false, "Print version and exit")
-	flag.Var(&sortMode, "sort-mode", fmt.Sprintf("Choose sorting algorithm; [ \"bubble\", \"merge\" ]; default = %s", sortMode))
+	flag.BoolVar(&options.debug, "debug", false, "Print debugging output")
+	flag.StringVar(&options.fieldSeparator, "field-separator", " ", "Use this field separator")
+	flag.BoolVar(&options.forceOutput, "force", false, "Overwrite output file if it exists")
+	flag.BoolVar(&options.ignoreCase, "ignore-case", false, "Ignore case for comparisons")
+	flag.BoolVar(&options.ignoreLeadingBlanks, "ignore-leading-blanks", false, "Ignore leading whitespace")
+	flag.BoolVar(&options.ignoreLeadingBlanks, "ignore-leading-whitespace", false, "Ignore leading whitespace, same as --ignore-leading-blanks")
+	flag.Var(&options.key, "key", "Sort lines based on a particular field, see 'Key Specification' for details")
+	flag.IntVar(&options.multiline, "multiline", 1, "Combine multiple lines before sorting")
+	flag.StringVar(&options.output, "output", "", "Write output to file instead of standard out")
+	flag.Var(&options.uniq, "uniq", fmt.Sprintf("Uniq'ify the sorted multilines; keep [ \"first\", \"last\" ] of multiple identical lines; default = %s", options.uniq))
+	flag.BoolVar(&options.printVersion, "version", false, "Print version and exit")
+	flag.Var(&options.sortMode, "sort-mode", fmt.Sprintf("Choose sorting algorithm; [ \"bubble\", \"merge\" ]; default = %s", options.sortMode))
 
-	flag.StringVar(&cpuprofile, "cpuprofile", "", "Write cpu profile to file")
-	flag.StringVar(&memprofile, "memprofile", "", "write memory profile to file")
+	flag.StringVar(&options.cpuprofile, "cpuprofile", "", "Write cpu profile to file")
+	flag.StringVar(&options.memprofile, "memprofile", "", "write memory profile to file")
 
 	flag.Parse()
 
-	if printVersion {
+	if options.printVersion {
 		fmt.Fprintf(flag.CommandLine.Output(), "Version: %s\n", Version)
 		os.Exit(0)
 	}
 	if flag.NArg() == 0 {
-		files = append(files, "-")
+		options.files = append(options.files, "-")
 	} else {
-		files = append(files, flag.Args()...)
+		options.files = append(options.files, flag.Args()...)
 	}
 }
 
@@ -101,11 +113,11 @@ func initializeLogging() {
 func main() {
 	initializeLogging()
 	parseCommandLine()
-	if debug {
+	if options.debug {
 		zerolog.SetGlobalLevel(zerolog.DebugLevel)
 	}
-	if cpuprofile != "" {
-		f, err := os.Create(cpuprofile)
+	if options.cpuprofile != "" {
+		f, err := os.Create(options.cpuprofile)
 		if err != nil {
 			log.Fatal().Msg(err.Error())
 		}
@@ -113,12 +125,12 @@ func main() {
 		defer pprof.StopCPUProfile()
 	}
 
-	var concatenatedContents ContentType = LoadInputFiles(files, key)
+	var concatenatedContents ContentType = LoadInputFiles(options.files, options.key)
 	var sortedContents ContentType = SortContents(concatenatedContents)
 	var uniqContents ContentType = UniqContents(sortedContents)
 
-	if memprofile != "" {
-		f, err := os.Create(memprofile)
+	if options.memprofile != "" {
+		f, err := os.Create(options.memprofile)
 		if err != nil {
 			log.Fatal().Msg(err.Error())
 		}
@@ -128,14 +140,14 @@ func main() {
 	}
 
 	var fd *os.File
-	if output != "" {
-		_, err := os.Stat(output)
-		if err == nil && !forceOutput {
-			log.Fatal().Msgf("output file %s already exists", output)
+	if options.output != "" {
+		_, err := os.Stat(options.output)
+		if err == nil && !options.forceOutput {
+			log.Fatal().Msgf("output file %s already exists", options.output)
 		}
-		fd, err = os.Create(output)
+		fd, err = os.Create(options.output)
 		if err != nil {
-			log.Fatal().Msgf("cannot open output file %s: %s", output, err.Error())
+			log.Fatal().Msgf("cannot open output file %s: %s", options.output, err.Error())
 		}
 		defer fd.Close()
 	} else {

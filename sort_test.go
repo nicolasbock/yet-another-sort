@@ -21,7 +21,7 @@ func TestSort1(t *testing.T) {
 	}
 	var got ContentType
 	for i := 0; i < 2; i++ {
-		sortMode = SortMode(i)
+		options.sortMode = SortMode(i)
 
 		got = SortContents(input)
 		if !expected.isEqual(got) {
@@ -50,7 +50,7 @@ func TestSort2(t *testing.T) {
 	}
 	var got ContentType
 	for i := 0; i < 2; i++ {
-		sortMode = SortMode(i)
+		options.sortMode = SortMode(i)
 		got = SortContents(input)
 		if !expected.isEqual(got) {
 			t.Errorf("got %s\nexpected %s", got, expected)
@@ -78,7 +78,7 @@ func TestSort3(t *testing.T) {
 	}
 	var got ContentType
 	for i := 0; i < 2; i++ {
-		sortMode = SortMode(i)
+		options.sortMode = SortMode(i)
 		got = SortContents(input)
 		if !expected.isEqual(got) {
 			t.Errorf("got\n%s\nexpected\n%s", got, expected)
