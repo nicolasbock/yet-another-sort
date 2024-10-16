@@ -1,8 +1,8 @@
 module github.com/nicolasbock/yet-another-sort/v2
 
-go 1.22
+go 1.23
 
-toolchain go1.22.4
+toolchain go1.23.1
 
 require github.com/rs/zerolog v1.33.0
 
