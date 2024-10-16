@@ -1,7 +1,7 @@
 .PHONY: yet-another-sort
 yet-another-sort: *.go
 	$(eval VERSION=$(shell git describe --tags))
-	go build -v -ldflags "-X main.Version=$(VERSION)"
+	go build -v -ldflags "-X main.Version=$(VERSION)" ./...
 
 .PHONY: clean
 clean:
@@ -9,11 +9,11 @@ clean:
 
 .PHONY: test
 test:
-	go test -v
+	go test -v ./...
 
 .PHONY: coverage
 coverage:
-	go test -cover -v
+	go test -cover -v ./...
 
 TEST_FIELDS = 4
 TEST_FIELD_LENGTH = 5
