@@ -55,7 +55,7 @@ func TestParseCommandLine(t *testing.T) {
 		os.Args = test.args
 
 		// Parse the command line
-		parseCommandLine()
+		parseCommandLine(os.Exit)
 
 		// Check the parsed options
 		if options.debug != test.expected.debug {

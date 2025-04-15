@@ -42,8 +42,10 @@ func NewConfigurationOptions() ConfigurationOptions {
 
 var options = NewConfigurationOptions()
 
+type ExitFunc func (int)
+
 // parseCommandLine initializes the argument parser and parses the command line.
-func parseCommandLine() {
+func parseCommandLine(exitFunc ExitFunc) {
 	flag.Usage = func() {
 		fmt.Fprintf(flag.CommandLine.Output(), "Usage: %s [OPTION]... [FILE]...\n", path.Clean(os.Args[0]))
 		fmt.Fprintln(flag.CommandLine.Output(), `
@@ -94,7 +96,7 @@ F1,F2  Use all fields between [F1,F2] for comparison
 
 	if options.printVersion {
 		fmt.Fprintf(flag.CommandLine.Output(), "Version: %s\n", Version)
-		os.Exit(0)
+		exitFunc(0)
 	}
 	if flag.NArg() == 0 {
 		options.files = append(options.files, "-")
@@ -112,7 +114,7 @@ func initializeLogging() {
 
 func main() {
 	initializeLogging()
-	parseCommandLine()
+	parseCommandLine(os.Exit)
 	if options.debug {
 		zerolog.SetGlobalLevel(zerolog.DebugLevel)
 	}
