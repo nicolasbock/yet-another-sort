@@ -1,5 +1,7 @@
 ---
 name: Build snap package
+permissions:
+  contents: read
 
 on:
   push:

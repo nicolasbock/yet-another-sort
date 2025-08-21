@@ -1,5 +1,7 @@
 ---
 name: Go package build and test
+permissions:
+  contents: read
 
 on:
   push:
