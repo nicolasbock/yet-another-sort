@@ -1,14 +1,15 @@
+---
 name: Build snap package
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
+  merge_group:
 
 jobs:
   snap:
-
     runs-on: ubuntu-latest
 
     steps:
