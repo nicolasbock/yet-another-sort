@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -54,13 +54,13 @@ jobs:
           sudo pbuilder build --buildresult result build/*.dsc
 
       - name: Upload artifacts (source package)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test-build-source-package
           path: build/**
 
       - name: Upload artifacts (binary package)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test-build-binary-package
           path: result/**
