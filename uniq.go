@@ -11,6 +11,11 @@ import (
 //
 // The uniq operations is not done in place. A copy of the uniqified ContentType is returned.
 func UniqContents(contents ContentType) ContentType {
+	// If uniq is disabled, return the original slice without copying
+	if options.uniq == no_uniq {
+		return contents
+	}
+
 	var result ContentType = append(ContentType{}, contents...)
 	if options.uniq != no_uniq {
 		for i := 0; ; {
