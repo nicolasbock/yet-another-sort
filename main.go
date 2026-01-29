@@ -29,7 +29,6 @@ type ConfigurationOptions struct {
 	multiline           int
 	output              string
 	printVersion        bool
-	sortMode            SortMode
 	uniq                UniqMode
 }
 
@@ -86,7 +85,6 @@ F1,F2  Use all fields between [F1,F2] for comparison
 	flag.StringVar(&options.output, "output", "", "Write output to file instead of standard out")
 	flag.Var(&options.uniq, "uniq", fmt.Sprintf("Uniq'ify the sorted multilines; keep [ \"first\", \"last\" ] of multiple identical lines; default = %s", options.uniq))
 	flag.BoolVar(&options.printVersion, "version", false, "Print version and exit")
-	flag.Var(&options.sortMode, "sort-mode", fmt.Sprintf("Choose sorting algorithm; [ \"bubble\", \"merge\" ]; default = %s", options.sortMode))
 
 	flag.StringVar(&options.cpuprofile, "cpuprofile", "", "Write cpu profile to file")
 	flag.StringVar(&options.memprofile, "memprofile", "", "write memory profile to file")

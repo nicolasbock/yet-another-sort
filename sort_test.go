@@ -20,16 +20,13 @@ func TestSort1(t *testing.T) {
 		ContentLineType{Lines: []string{"5. Fifth line"}, Fields: []string{"5.", "Fifth", "line"}, CompareLine: "5. Fifth line"},
 	}
 	var got ContentType
-	for i := 0; i < 2; i++ {
-		options.sortMode = SortMode(i)
 
-		got = SortContents(input)
-		if !expected.isEqual(got) {
-			t.Errorf("got %s\nexpected %s", got, expected)
-		}
-		if input.isEqual(got) {
-			t.Errorf("input list was modified during sort")
-		}
+	got = SortContents(input)
+	if !expected.isEqual(got) {
+		t.Errorf("got %s\nexpected %s", got, expected)
+	}
+	if input.isEqual(got) {
+		t.Errorf("input list was modified during sort")
 	}
 }
 
@@ -49,15 +46,13 @@ func TestSort2(t *testing.T) {
 		ContentLineType{Lines: []string{"5. Fifth line"}, Fields: []string{"5.", "Fifth", "line"}, CompareLine: "5."},
 	}
 	var got ContentType
-	for i := 0; i < 2; i++ {
-		options.sortMode = SortMode(i)
-		got = SortContents(input)
-		if !expected.isEqual(got) {
-			t.Errorf("got %s\nexpected %s", got, expected)
-		}
-		if input.isEqual(got) {
-			t.Errorf("input list was modified during sort")
-		}
+
+	got = SortContents(input)
+	if !expected.isEqual(got) {
+		t.Errorf("got %s\nexpected %s", got, expected)
+	}
+	if input.isEqual(got) {
+		t.Errorf("input list was modified during sort")
 	}
 }
 
@@ -77,14 +72,12 @@ func TestSort3(t *testing.T) {
 		{Lines: []string{"line 5"}, Fields: []string{"line", "5"}, CompareLine: "line 5"},
 	}
 	var got ContentType
-	for i := 0; i < 2; i++ {
-		options.sortMode = SortMode(i)
-		got = SortContents(input)
-		if !expected.isEqual(got) {
-			t.Errorf("got\n%s\nexpected\n%s", got, expected)
-		}
-		if input.isEqual(got) {
-			t.Errorf("input list was modified during sort")
-		}
+
+	got = SortContents(input)
+	if !expected.isEqual(got) {
+		t.Errorf("got\n%s\nexpected\n%s", got, expected)
+	}
+	if input.isEqual(got) {
+		t.Errorf("input list was modified during sort")
 	}
 }
