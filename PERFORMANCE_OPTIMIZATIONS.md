@@ -146,7 +146,7 @@ Test dataset: 1,024,000 lines, 4 fields per line, 5 characters per field
 Run the performance test:
 ```bash
 ./scripts/generate-random-input-file.py --lines 1024000 --fields 4 --field-length 5 > /tmp/test.txt
-/usr/bin/time -f "%U user %S sys %E elapsed %M kB" ./yet-another-sort --sort-mode merge /tmp/test.txt > /dev/null
+/usr/bin/time -f "%U user %S sys %E elapsed %M kB" ./yet-another-sort /tmp/test.txt > /dev/null
 ```
 
 Compare with GNU sort:

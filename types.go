@@ -206,32 +206,3 @@ func (um *UniqMode) Set(s string) error {
 	}
 	return nil
 }
-
-type SortMode int
-
-const (
-	merge = iota
-	bubble
-)
-
-func (sm SortMode) String() string {
-	switch sm {
-	case bubble:
-		return "bubble sort"
-	case merge:
-		return "merge sort"
-	}
-	return "FIXME"
-}
-
-func (sm *SortMode) Set(s string) error {
-	switch s {
-	case "bubble":
-		*sm = bubble
-	case "merge":
-		*sm = merge
-	default:
-		return fmt.Errorf("unknown value %s for SortMode", s)
-	}
-	return nil
-}

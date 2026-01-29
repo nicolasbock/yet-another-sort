@@ -179,24 +179,3 @@ func TestIsEqualContentType(t *testing.T) {
 		t.Errorf("%s\nis not equal to\n%s", a, b)
 	}
 }
-
-func TestSortModeString(t *testing.T) {
-	var sm SortMode
-	var expected = "merge sort"
-	var got string = sm.String()
-	if strings.Compare(got, expected) != 0 {
-		t.Errorf("Expected %s got %s", expected, got)
-	}
-	sm = bubble
-	expected = "bubble sort"
-	got = sm.String()
-	if strings.Compare(got, expected) != 0 {
-		t.Errorf("Expected %s got %s", expected, got)
-	}
-	sm = merge
-	expected = "merge sort"
-	got = sm.String()
-	if strings.Compare(got, expected) != 0 {
-		t.Errorf("Expected %s got %s", expected, got)
-	}
-}
