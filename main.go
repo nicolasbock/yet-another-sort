@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"flag"
 	"fmt"
 	"os"
@@ -153,9 +154,14 @@ func main() {
 	} else {
 		fd = os.Stdout
 	}
+
+	// Use buffered writer for better performance
+	writer := bufio.NewWriterSize(fd, 256*1024) // 256KB buffer
 	for _, multiline := range uniqContents {
 		for _, line := range multiline.Lines {
-			fmt.Fprintln(fd, line)
+			writer.WriteString(line)
+			writer.WriteByte('\n')
 		}
 	}
+	writer.Flush()
 }
