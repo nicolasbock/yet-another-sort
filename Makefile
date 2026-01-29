@@ -27,12 +27,13 @@ benchmark-bubble: yet-another-sort
 	$(eval REFERENCE = $(shell mktemp))
 	$(eval TEST_LINES = 2000 8000 16000 32000)
 	for lines in $(TEST_LINES); do \
-	    echo "Testing $${lines} lines"; \
-	    ./scripts/generate-random-input-file.py --lines $${lines} --fields $(TEST_FIELDS) --field-length $(TEST_FIELD_LENGTH) > $(INFILE); \
-	    for i in $$(seq $(TEST_REPEATS)); do \
-	        $(TIME) ./yet-another-sort --sort-mode bubble $(INFILE) > $(OUTFILE); \
-	        $(TIME) sort $(INFILE) > $(REFERENCE); \
-	    done; \
+		echo "Testing $${lines} lines"; \
+		./scripts/generate-random-input-file.py --lines $${lines} --fields $(TEST_FIELDS) --field-length $(TEST_FIELD_LENGTH) > $(INFILE); \
+		for i in $$(seq $(TEST_REPEATS)); do \
+			$(TIME) ./yet-another-sort --sort-mode bubble $(INFILE) > $(OUTFILE); \
+			$(TIME) sort $(INFILE) > $(REFERENCE); \
+		done; \
+		diff -Nsaur $(REFERENCE) $(OUTFILE); \
 	done
 	echo "Results are in $(OUTFILE) and $(REFERENCE)"
 
@@ -44,11 +45,12 @@ benchmark-merge: yet-another-sort
 	$(eval CPUPROFILE = $(shell mktemp))
 	$(eval TEST_LINES = 2000 8000 16000 32000 64000 1024000)
 	for lines in $(TEST_LINES); do \
-	    echo "Testing $${lines} lines"; \
-	    ./scripts/generate-random-input-file.py --lines $${lines} --fields $(TEST_FIELDS) --field-length $(TEST_FIELD_LENGTH) > $(INFILE); \
-	    for i in $$(seq $(TEST_REPEATS)); do \
-	        $(TIME) ./yet-another-sort --sort-mode merge $(INFILE) > $(OUTFILE); \
-	        $(TIME) sort $(INFILE) > $(REFERENCE); \
-        done; \
-    done
+		echo "Testing $${lines} lines"; \
+		./scripts/generate-random-input-file.py --lines $${lines} --fields $(TEST_FIELDS) --field-length $(TEST_FIELD_LENGTH) > $(INFILE); \
+		for i in $$(seq $(TEST_REPEATS)); do \
+			$(TIME) ./yet-another-sort --sort-mode merge $(INFILE) > $(OUTFILE); \
+			$(TIME) sort $(INFILE) > $(REFERENCE); \
+		done; \
+		diff -Nsaur $(REFERENCE) $(OUTFILE); \
+	done
 	echo "Results are in $(OUTFILE) and $(REFERENCE)"
