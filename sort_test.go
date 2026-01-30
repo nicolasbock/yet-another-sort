@@ -81,3 +81,31 @@ func TestSort3(t *testing.T) {
 		t.Errorf("input list was modified during sort")
 	}
 }
+
+func TestSortEmpty(t *testing.T) {
+	var input ContentType = ContentType{}
+	var expected ContentType = ContentType{}
+	var got ContentType
+
+	got = SortContents(input)
+	if !expected.isEqual(got) {
+		t.Errorf("got\n%s\nexpected\n%s", got, expected)
+	}
+}
+
+func TestSortSingleElement(t *testing.T) {
+	var input ContentType = ContentType{
+		{Lines: []string{"only line"}, Fields: []string{"only", "line"}, CompareLine: "only line"},
+	}
+	var expected ContentType = ContentType{
+		{Lines: []string{"only line"}, Fields: []string{"only", "line"}, CompareLine: "only line"},
+	}
+	var got ContentType
+
+	got = SortContents(input)
+	if !expected.isEqual(got) {
+		t.Errorf("got\n%s\nexpected\n%s", got, expected)
+	}
+	// For single element, the function returns the same slice (no copy needed)
+	// so we don't check for modification in this case
+}
