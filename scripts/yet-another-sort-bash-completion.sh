@@ -3,6 +3,7 @@
 _complete_yet_another_sort () {
   local cur prev
   local known_options=(
+    --cpuprofile
     --debug
     --field-separator
     --force
@@ -10,6 +11,7 @@ _complete_yet_another_sort () {
     --ignore-leading-blanks
     --ignore-leading-whitespace
     --key
+    --memprofile
     --multiline
     --output
     --uniq
@@ -20,7 +22,7 @@ _complete_yet_another_sort () {
   _init_completion || return
 
   case "$prev" in
-    --output)
+    --output|--cpuprofile|--memprofile)
       _filedir
       return
       ;;
