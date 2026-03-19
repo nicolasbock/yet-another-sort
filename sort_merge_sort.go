@@ -27,10 +27,10 @@ func mergeSort(contents ContentType) ContentType {
 	sortedContents := make(ContentType, len(contents))
 	copy(sortedContents, contents)
 
-	// Use Go's optimized sort
-	// Note: sort.Sort is not stable, but it's faster
-	// Use sort.Stable(sortedContents) if stability is required
-	sort.Sort(sortedContents)
+	// Use Go's stable sort to preserve original input order among equal keys.
+	// This is required for --uniq last/first to correctly identify which of
+	// the duplicates appeared last/first in the original input.
+	sort.Stable(sortedContents)
 
 	return sortedContents
 }
