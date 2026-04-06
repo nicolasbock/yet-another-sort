@@ -17,6 +17,8 @@ import (
 //
 // For stable sorting (preserving order of equal elements), we use sort.Stable
 // which implements a stable version of the sorting algorithm.
+// Use --stable-sort to enable this; it is required when --uniq last/first must
+// keep the duplicate that appeared last/first in the original input.
 func mergeSort(contents ContentType) ContentType {
 	// If the slice is empty or has one element, it's already sorted
 	if len(contents) <= 1 {
@@ -27,10 +29,16 @@ func mergeSort(contents ContentType) ContentType {
 	sortedContents := make(ContentType, len(contents))
 	copy(sortedContents, contents)
 
-	// Use Go's stable sort to preserve original input order among equal keys.
-	// This is required for --uniq last/first to correctly identify which of
-	// the duplicates appeared last/first in the original input.
-	sort.Stable(sortedContents)
+	if options.stableSort {
+		// Stable sort preserves the original input order among equal keys.
+		// Required for --uniq last/first to correctly identify which duplicate
+		// appeared last/first in the original input.
+		sort.Stable(sortedContents)
+	} else {
+		// Unstable sort (default): faster, but does not preserve input order
+		// among entries with equal keys.
+		sort.Sort(sortedContents)
+	}
 
 	return sortedContents
 }

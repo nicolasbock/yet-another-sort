@@ -29,6 +29,7 @@ type ConfigurationOptions struct {
 	multiline           int
 	output              string
 	printVersion        bool
+	stableSort          bool
 	uniq                UniqMode
 }
 
@@ -83,8 +84,9 @@ F1,F2  Use all fields between [F1,F2] for comparison
 	flag.Var(&options.key, "key", "Sort lines based on a particular field, see 'Key Specification' for details")
 	flag.IntVar(&options.multiline, "multiline", 1, "Combine multiple lines before sorting")
 	flag.StringVar(&options.output, "output", "", "Write output to file instead of standard out")
-	flag.Var(&options.uniq, "uniq", fmt.Sprintf("Uniq'ify the sorted multilines; keep [ \"first\", \"last\" ] of multiple identical lines; default = %s", options.uniq))
+	flag.Var(&options.uniq, "uniq", fmt.Sprintf("Uniq'ify the sorted multilines; keep [ \"first\", \"last\" ] of multiple identical lines; when distinct entries compare equal by sort key, \"first\"/\"last\" are deterministic only with --stable-sort; default = %s", options.uniq))
 	flag.BoolVar(&options.printVersion, "version", false, "Print version and exit")
+	flag.BoolVar(&options.stableSort, "stable-sort", false, "Use stable sort; preserves original input order among entries with equal keys, which is required for deterministic --uniq first/last behavior when distinct entries have the same key (slower)")
 
 	flag.StringVar(&options.cpuprofile, "cpuprofile", "", "Write cpu profile to file")
 	flag.StringVar(&options.memprofile, "memprofile", "", "write memory profile to file")

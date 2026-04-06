@@ -35,7 +35,7 @@ benchmark: yet-another-sort generate-random-input-file
 		echo "Testing $${lines} lines"; \
 		./scripts/generate-random-input-file --lines $${lines} --fields $(TEST_FIELDS) --field-length $(TEST_FIELD_LENGTH) > $(INFILE); \
 		for i in $$(seq $(TEST_REPEATS)); do \
-			$(TIME) ./yet-another-sort $(INFILE) > $(OUTFILE); \
+			$(TIME) ./yet-another-sort -stable-sort $(INFILE) > $(OUTFILE); \
 			$(TIME) sort --stable $(INFILE) > $(REFERENCE); \
 		done; \
 		diff -Nsaur $(REFERENCE) $(OUTFILE); \
