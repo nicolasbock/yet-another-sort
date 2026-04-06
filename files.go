@@ -14,10 +14,10 @@ import (
 //
 // The entire file is read into a single []byte buffer. Line strings are created
 // as zero-copy views into that buffer via unsafe.String, so no per-line heap
-// allocation is needed. The buffer is kept alive for the lifetime of the
-// returned slice via the keepAlive closure captured in the returned strings'
-// backing pointers — in practice the buffer lives as long as the []string does
-// because the GC traces the string headers back to it.
+// allocation is needed. Because those strings point at the original bytes, the
+// buffer must not be modified for as long as any returned string is in use.
+// The backing array remains reachable through the returned strings, so it stays
+// alive for the lifetime of those strings.
 func LoadFile(filename string) []string {
 	var data []byte
 	var err error
