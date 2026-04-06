@@ -129,10 +129,15 @@ func main() {
 	}
 
 	if options.memprofile != "" {
-		// Run a minimal pipeline just to populate the heap before profiling.
-		var concatenatedContents ContentType = LoadInputFiles(options.files, options.key)
-		var sortedContents ContentType = SortContents(concatenatedContents)
-		UniqContents(sortedContents)
+		// Run the same mode-specific pipeline used by normal execution
+		// so the heap profile reflects the selected behavior.
+		if options.bashHistory {
+			RunBashHistoryMode(options.files)
+		} else {
+			var concatenatedContents ContentType = LoadInputFiles(options.files, options.key)
+			var sortedContents ContentType = SortContents(concatenatedContents)
+			UniqContents(sortedContents)
+		}
 		f, err := os.Create(options.memprofile)
 		if err != nil {
 			log.Fatal().Msg(err.Error())
