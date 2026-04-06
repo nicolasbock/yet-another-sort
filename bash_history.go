@@ -7,8 +7,8 @@ import (
 )
 
 // isBashTimestamp reports whether s matches the bash history timestamp format:
-// a '#' character followed by one or more ASCII decimal digits, and nothing else.
-// The empty string is rejected.
+// a '#' character followed by one or more ASCII decimal digits that represent a
+// value in the valid int64 range, and nothing else. The empty string is rejected.
 func isBashTimestamp(s string) bool {
 	if len(s) < 2 || s[0] != '#' {
 		return false
@@ -18,7 +18,8 @@ func isBashTimestamp(s string) bool {
 			return false
 		}
 	}
-	return true
+	_, err := strconv.ParseInt(s[1:], 10, 64)
+	return err == nil
 }
 
 // ParseBashHistory parses lines from a bash history file into ContentType.
