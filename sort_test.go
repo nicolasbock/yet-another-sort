@@ -93,6 +93,32 @@ func TestSortEmpty(t *testing.T) {
 	}
 }
 
+func TestSortStable(t *testing.T) {
+	// When --stable-sort is enabled, entries with equal CompareLine values must
+	// preserve their original relative (input) order.
+	savedStableSort := options.stableSort
+	options.stableSort = true
+	defer func() { options.stableSort = savedStableSort }()
+
+	var input ContentType = ContentType{
+		{Lines: []string{"#1773948684", "juju controllers"}, Fields: []string{"#1773948684", "juju", "controllers"}, CompareLine: "juju controllers"},
+		{Lines: []string{"#1773949015", "ll"}, Fields: []string{"#1773949015", "ll"}, CompareLine: "ll"},
+		{Lines: []string{"#1773949035", "juju controllers"}, Fields: []string{"#1773949035", "juju", "controllers"}, CompareLine: "juju controllers"},
+	}
+	// After a stable sort by CompareLine the two "juju controllers" entries must
+	// remain in their original order: older timestamp first, newer timestamp second.
+	var expected ContentType = ContentType{
+		{Lines: []string{"#1773948684", "juju controllers"}, Fields: []string{"#1773948684", "juju", "controllers"}, CompareLine: "juju controllers"},
+		{Lines: []string{"#1773949035", "juju controllers"}, Fields: []string{"#1773949035", "juju", "controllers"}, CompareLine: "juju controllers"},
+		{Lines: []string{"#1773949015", "ll"}, Fields: []string{"#1773949015", "ll"}, CompareLine: "ll"},
+	}
+
+	got := SortContents(input)
+	if !expected.isEqual(got) {
+		t.Errorf("stable sort: got\n%s\nexpected\n%s", got, expected)
+	}
+}
+
 func TestSortSingleElement(t *testing.T) {
 	var input ContentType = ContentType{
 		{Lines: []string{"only line"}, Fields: []string{"only", "line"}, CompareLine: "only line"},
