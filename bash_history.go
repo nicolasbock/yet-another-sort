@@ -158,7 +158,12 @@ func SortBashHistory(contents ContentType) ContentType {
 	}
 	sorted := make(ContentType, len(contents))
 	copy(sorted, contents)
-	sort.Sort(bashHistoryByTimestamp{records: sorted})
+	records := bashHistoryByTimestamp{records: sorted}
+	if options.stableSort {
+		sort.Stable(records)
+	} else {
+		sort.Sort(records)
+	}
 	return sorted
 }
 
