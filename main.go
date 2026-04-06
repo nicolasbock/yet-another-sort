@@ -21,6 +21,7 @@ type ConfigurationOptions struct {
 	debug               bool
 	fieldSeparator      string
 	files               []string
+	bashHistory         bool
 	forceOutput         bool
 	ignoreCase          bool
 	ignoreLeadingBlanks bool
@@ -75,6 +76,7 @@ F1,F2  Use all fields between [F1,F2] for comparison
 		`)
 	}
 
+	flag.BoolVar(&options.bashHistory, "bash-history", false, "Process input as a bash history file: deduplicate command blocks keeping the latest timestamp, then sort by timestamp ascending")
 	flag.BoolVar(&options.debug, "debug", false, "Print debugging output")
 	flag.StringVar(&options.fieldSeparator, "field-separator", " ", "Use this field separator")
 	flag.BoolVar(&options.forceOutput, "force", false, "Overwrite output file if it exists")
@@ -126,11 +128,16 @@ func main() {
 		defer pprof.StopCPUProfile()
 	}
 
-	var concatenatedContents ContentType = LoadInputFiles(options.files, options.key)
-	var sortedContents ContentType = SortContents(concatenatedContents)
-	var uniqContents ContentType = UniqContents(sortedContents)
-
 	if options.memprofile != "" {
+		// Run the same mode-specific pipeline used by normal execution
+		// so the heap profile reflects the selected behavior.
+		if options.bashHistory {
+			RunBashHistoryMode(options.files)
+		} else {
+			var concatenatedContents ContentType = LoadInputFiles(options.files, options.key)
+			var sortedContents ContentType = SortContents(concatenatedContents)
+			UniqContents(sortedContents)
+		}
 		f, err := os.Create(options.memprofile)
 		if err != nil {
 			log.Fatal().Msg(err.Error())
@@ -157,6 +164,23 @@ func main() {
 
 	// Use buffered writer for better performance
 	writer := bufio.NewWriterSize(fd, 256*1024) // 256KB buffer
+
+	if options.bashHistory {
+		contents := RunBashHistoryMode(options.files)
+		for _, record := range contents {
+			for _, line := range record.Lines {
+				writer.WriteString(line)
+				writer.WriteByte('\n')
+			}
+		}
+		writer.Flush()
+		return
+	}
+
+	var concatenatedContents ContentType = LoadInputFiles(options.files, options.key)
+	var sortedContents ContentType = SortContents(concatenatedContents)
+	var uniqContents ContentType = UniqContents(sortedContents)
+
 	for _, multiline := range uniqContents {
 		for _, line := range multiline.Lines {
 			writer.WriteString(line)
