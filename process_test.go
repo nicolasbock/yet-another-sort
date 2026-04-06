@@ -23,10 +23,10 @@ func TestProcessInputFiles1(t *testing.T) {
 		Type: NoKey,
 	}
 	var expected ContentType = ContentType{
-		{Lines: []string{"Line one"}, Fields: []string{"Line", "one"}, CompareLine: "Line one"},
-		{Lines: []string{"Line two"}, Fields: []string{"Line", "two"}, CompareLine: "Line two"},
-		{Lines: []string{"Line three"}, Fields: []string{"Line", "three"}, CompareLine: "Line three"},
-		{Lines: []string{"Line four"}, Fields: []string{"Line", "four"}, CompareLine: "Line four"},
+		{Lines: []string{"Line one"}, Fields: nil, CompareLine: "Line one"},
+		{Lines: []string{"Line two"}, Fields: nil, CompareLine: "Line two"},
+		{Lines: []string{"Line three"}, Fields: nil, CompareLine: "Line three"},
+		{Lines: []string{"Line four"}, Fields: nil, CompareLine: "Line four"},
 	}
 	var got ContentType = ProcessInputFiles(input, key)
 	if !got.isEqual(expected) {
@@ -46,8 +46,8 @@ func TestProcessInputFiles2(t *testing.T) {
 		Type: NoKey,
 	}
 	var expected ContentType = ContentType{
-		{Lines: []string{"Line one", "Line two"}, Fields: []string{"Line", "one", "Line", "two"}, CompareLine: "Line one Line two"},
-		{Lines: []string{"Line three", "Line four"}, Fields: []string{"Line", "three", "Line", "four"}, CompareLine: "Line three Line four"},
+		{Lines: []string{"Line one", "Line two"}, Fields: nil, CompareLine: "Line one Line two"},
+		{Lines: []string{"Line three", "Line four"}, Fields: nil, CompareLine: "Line three Line four"},
 	}
 	var got ContentType = ProcessInputFiles(input, key)
 	if !got.isEqual(expected) {
@@ -86,11 +86,11 @@ func TestProcessInputFiles4(t *testing.T) {
 		"line 5",
 	}
 	var expected ContentType = ContentType{
-		{Lines: []string{"line 1"}, Fields: []string{"line", "1"}, CompareLine: "line 1"},
-		{Lines: []string{"Line 2"}, Fields: []string{"Line", "2"}, CompareLine: "line 2"},
-		{Lines: []string{"line 3"}, Fields: []string{"line", "3"}, CompareLine: "line 3"},
-		{Lines: []string{"Line 4"}, Fields: []string{"Line", "4"}, CompareLine: "line 4"},
-		{Lines: []string{"line 5"}, Fields: []string{"line", "5"}, CompareLine: "line 5"},
+		{Lines: []string{"line 1"}, Fields: nil, CompareLine: "line 1"},
+		{Lines: []string{"Line 2"}, Fields: nil, CompareLine: "line 2"},
+		{Lines: []string{"line 3"}, Fields: nil, CompareLine: "line 3"},
+		{Lines: []string{"Line 4"}, Fields: nil, CompareLine: "line 4"},
+		{Lines: []string{"line 5"}, Fields: nil, CompareLine: "line 5"},
 	}
 	var key = KeyType{}
 	options.multiline = 1
@@ -161,9 +161,9 @@ func TestProcessInputFilesWithIgnoreLeadingBlanks(t *testing.T) {
 		Type: NoKey,
 	}
 	var expected ContentType = ContentType{
-		{Lines: []string{"  leading spaces"}, Fields: []string{"leading", "spaces"}, CompareLine: "leading spaces"},
-		{Lines: []string{"\tleading tab"}, Fields: []string{"leading", "tab"}, CompareLine: "leading tab"},
-		{Lines: []string{" \t mixed whitespace"}, Fields: []string{"mixed", "whitespace"}, CompareLine: "mixed whitespace"},
+		{Lines: []string{"  leading spaces"}, Fields: nil, CompareLine: "leading spaces"},
+		{Lines: []string{"\tleading tab"}, Fields: nil, CompareLine: "leading tab"},
+		{Lines: []string{" \t mixed whitespace"}, Fields: nil, CompareLine: "mixed whitespace"},
 	}
 	var got ContentType = ProcessInputFiles(input, key)
 	if !got.isEqual(expected) {
@@ -212,6 +212,7 @@ func TestProcessInputFilesWithMultiCharSeparator(t *testing.T) {
 		{Lines: []string{"field1::field2::field3"}, Fields: []string{"field1", "field2", "field3"}, CompareLine: "field1::field2::field3"},
 		{Lines: []string{"a::b::c"}, Fields: []string{"a", "b", "c"}, CompareLine: "a::b::c"},
 	}
+	// Note: non-space separator still populates Fields (empty fields are collapsed in CompareLine)
 	var got ContentType = ProcessInputFiles(input, key)
 	if !got.isEqual(expected) {
 		t.Errorf("got\n%s\nexpected\n%s", got, expected)
@@ -235,6 +236,7 @@ func TestProcessInputFilesEmptyFields(t *testing.T) {
 		{Lines: []string{"field1,,field3"}, Fields: []string{"field1", "field3"}, CompareLine: "field1,field3"},
 		{Lines: []string{"a,,c"}, Fields: []string{"a", "c"}, CompareLine: "a,c"},
 	}
+	// Note: non-space separator still populates Fields (empty fields are collapsed in CompareLine)
 	var got ContentType = ProcessInputFiles(input, key)
 	if !got.isEqual(expected) {
 		t.Errorf("got\n%s\nexpected\n%s", got, expected)
@@ -254,7 +256,7 @@ func TestProcessInputFilesSingleFieldOnly(t *testing.T) {
 		Type: NoKey,
 	}
 	var expected ContentType = ContentType{
-		{Lines: []string{"onlyfield"}, Fields: []string{"onlyfield"}, CompareLine: "onlyfield"},
+		{Lines: []string{"onlyfield"}, Fields: nil, CompareLine: "onlyfield"},
 	}
 	var got ContentType = ProcessInputFiles(input, key)
 	if !got.isEqual(expected) {
@@ -296,8 +298,8 @@ func TestProcessInputFilesMultilineWithOddNumber(t *testing.T) {
 		Type: NoKey,
 	}
 	var expected ContentType = ContentType{
-		{Lines: []string{"line1", "line2"}, Fields: []string{"line1", "line2"}, CompareLine: "line1 line2"},
-		{Lines: []string{"line3"}, Fields: []string{"line3"}, CompareLine: "line3"},
+		{Lines: []string{"line1", "line2"}, Fields: nil, CompareLine: "line1 line2"},
+		{Lines: []string{"line3"}, Fields: nil, CompareLine: "line3"},
 	}
 	var got ContentType = ProcessInputFiles(input, key)
 	if !got.isEqual(expected) {
@@ -318,8 +320,8 @@ func TestProcessInputFilesBothCaseAndLeadingBlanks(t *testing.T) {
 		Type: NoKey,
 	}
 	var expected ContentType = ContentType{
-		{Lines: []string{"  UPPER case"}, Fields: []string{"UPPER", "case"}, CompareLine: "upper case"},
-		{Lines: []string{" \t Mixed CASE"}, Fields: []string{"Mixed", "CASE"}, CompareLine: "mixed case"},
+		{Lines: []string{"  UPPER case"}, Fields: nil, CompareLine: "upper case"},
+		{Lines: []string{" \t Mixed CASE"}, Fields: nil, CompareLine: "mixed case"},
 	}
 	var got ContentType = ProcessInputFiles(input, key)
 	if !got.isEqual(expected) {

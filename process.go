@@ -21,6 +21,16 @@ func ProcessInputFiles(lines []string, key KeyType) ContentType {
 
 		// Pre-allocate slices with known capacity
 		contentLine.Lines = make([]string, 0, options.multiline)
+
+		// For NoKey with the default space separator we never need the Fields
+		// slice: CompareLine can be set directly to Lines[0] (multiline=1) or
+		// joined lines (multiline>1), avoiding both the field-split allocations
+		// and the strings.Builder reconstruction.
+		// For other key types, or when a non-space separator is used (where
+		// empty fields are collapsed and affect CompareLine), we must still
+		// split into fields.
+		needFields := key.Type != NoKey || options.fieldSeparator != " "
+
 		var allFields []string
 
 		// Process all lines in this multiline group
@@ -33,26 +43,28 @@ func ProcessInputFiles(lines []string, key KeyType) ContentType {
 			line := lines[linenumber]
 			contentLine.Lines = append(contentLine.Lines, line)
 
-			// Split fields and filter empty ones
-			// Using strings.FieldsFunc is more efficient for custom separators
-			if options.fieldSeparator == " " {
-				// Fast path for space separator - strings.Fields handles multiple spaces
-				fields := strings.Fields(line)
-				allFields = append(allFields, fields...)
-			} else if len(options.fieldSeparator) == 1 {
-				// Single character separator - optimize by avoiding repeated string operations
-				rawFields := strings.Split(line, options.fieldSeparator)
-				for _, field := range rawFields {
-					if len(field) > 0 {
-						allFields = append(allFields, field)
+			if needFields {
+				// Split fields and filter empty ones
+				// Using strings.FieldsFunc is more efficient for custom separators
+				if options.fieldSeparator == " " {
+					// Fast path for space separator - strings.Fields handles multiple spaces
+					fields := strings.Fields(line)
+					allFields = append(allFields, fields...)
+				} else if len(options.fieldSeparator) == 1 {
+					// Single character separator - optimize by avoiding repeated string operations
+					rawFields := strings.Split(line, options.fieldSeparator)
+					for _, field := range rawFields {
+						if len(field) > 0 {
+							allFields = append(allFields, field)
+						}
 					}
-				}
-			} else {
-				// Multi-character separator (rare case)
-				rawFields := strings.Split(line, options.fieldSeparator)
-				for _, field := range rawFields {
-					if len(field) > 0 {
-						allFields = append(allFields, field)
+				} else {
+					// Multi-character separator (rare case)
+					rawFields := strings.Split(line, options.fieldSeparator)
+					for _, field := range rawFields {
+						if len(field) > 0 {
+							allFields = append(allFields, field)
+						}
 					}
 				}
 			}
@@ -63,21 +75,42 @@ func ProcessInputFiles(lines []string, key KeyType) ContentType {
 		// Build compare line based on key type
 		switch key.Type {
 		case NoKey:
-			// Join all fields - use strings.Builder for efficiency
-			if len(allFields) == 0 {
-				contentLine.CompareLine = ""
-			} else if len(allFields) == 1 {
-				contentLine.CompareLine = allFields[0]
-			} else {
-				// Use strings.Builder to avoid intermediate allocations
-				var builder strings.Builder
-				builder.Grow(len(allFields) * 10) // Estimate size
-				builder.WriteString(allFields[0])
-				for i := 1; i < len(allFields); i++ {
-					builder.WriteString(options.fieldSeparator)
-					builder.WriteString(allFields[i])
+			if !needFields {
+				// Fast path: space separator, NoKey.
+				// CompareLine is the raw line (multiline=1) or lines joined by
+				// a single space (multiline>1). No extra allocation needed for
+				// the single-line case.
+				if len(contentLine.Lines) == 0 {
+					contentLine.CompareLine = ""
+				} else if len(contentLine.Lines) == 1 {
+					contentLine.CompareLine = contentLine.Lines[0]
+				} else {
+					var builder strings.Builder
+					builder.Grow(len(contentLine.Lines) * (len(contentLine.Lines[0]) + 1))
+					builder.WriteString(contentLine.Lines[0])
+					for k := 1; k < len(contentLine.Lines); k++ {
+						builder.WriteString(options.fieldSeparator)
+						builder.WriteString(contentLine.Lines[k])
+					}
+					contentLine.CompareLine = builder.String()
 				}
-				contentLine.CompareLine = builder.String()
+			} else {
+				// General path: non-space separator (empty fields are collapsed,
+				// so CompareLine differs from the raw line).
+				if len(allFields) == 0 {
+					contentLine.CompareLine = ""
+				} else if len(allFields) == 1 {
+					contentLine.CompareLine = allFields[0]
+				} else {
+					var builder strings.Builder
+					builder.Grow(len(allFields) * 10)
+					builder.WriteString(allFields[0])
+					for i := 1; i < len(allFields); i++ {
+						builder.WriteString(options.fieldSeparator)
+						builder.WriteString(allFields[i])
+					}
+					contentLine.CompareLine = builder.String()
+				}
 			}
 
 		case SingleField:
