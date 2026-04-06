@@ -27,16 +27,16 @@ func TestIsBashTimestamp_Valid(t *testing.T) {
 
 func TestIsBashTimestamp_Invalid(t *testing.T) {
 	cases := []string{
-		"",                        // empty string
-		"#",                       // hash with no digits
-		"1773948684",              // no leading hash
-		"#abc",                    // non-digit after hash
-		"#123abc",                 // digits then non-digit
-		"# 123",                   // space after hash
-		"##123",                   // double hash
-		"#-1",                     // negative sign
-		"#1.0",                    // decimal point
-		"#99999999999999999999",   // overflows int64 (> math.MaxInt64)
+		"",                      // empty string
+		"#",                     // hash with no digits
+		"1773948684",            // no leading hash
+		"#abc",                  // non-digit after hash
+		"#123abc",               // digits then non-digit
+		"# 123",                 // space after hash
+		"##123",                 // double hash
+		"#-1",                   // negative sign
+		"#1.0",                  // decimal point
+		"#99999999999999999999", // overflows int64 (> math.MaxInt64)
 	}
 	for _, s := range cases {
 		if isBashTimestamp(s) {
