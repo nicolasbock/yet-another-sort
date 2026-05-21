@@ -59,4 +59,5 @@ parts:
       craftctl set version=${VERSION}
       make
       install --mode 0755 -D yet-another-sort ${CRAFT_PART_INSTALL}/usr/bin/yet-another-sort
-      install --mode 0644 -D scripts/yet-another-sort-bash-completion.sh ${CRAFT_PART_INSTALL}/usr/share/yet-another-sort/yet-another-sort-bash-completion.sh
+      install --mode 0755 -d ${CRAFT_PART_INSTALL}/usr/share/yet-another-sort
+      ./yet-another-sort completion bash > ${CRAFT_PART_INSTALL}/usr/share/yet-another-sort/yet-another-sort-bash-completion.sh

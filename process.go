@@ -29,7 +29,7 @@ func ProcessInputFiles(lines []string, key KeyType) ContentType {
 		// For other key types, or when a non-space separator is used (where
 		// empty fields are collapsed and affect CompareLine), we must still
 		// split into fields.
-		needFields := key.Type != NoKey || options.fieldSeparator != " "
+		needFields := key.KeyKind != NoKey || options.fieldSeparator != " "
 
 		var allFields []string
 
@@ -73,7 +73,7 @@ func ProcessInputFiles(lines []string, key KeyType) ContentType {
 		contentLine.Fields = allFields
 
 		// Build compare line based on key type
-		switch key.Type {
+		switch key.KeyKind {
 		case NoKey:
 			if !needFields {
 				// Fast path: space separator, NoKey.

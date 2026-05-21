@@ -42,12 +42,12 @@ func (k KeyT) String() string {
 }
 
 type KeyType struct {
-	Type KeyT
-	Keys []int
+	KeyKind KeyT
+	Keys    []int
 }
 
 func (k KeyType) String() string {
-	var result string = k.Type.String()
+	var result string = k.KeyKind.String()
 	if len(k.Keys) > 0 {
 		var keyStrings []string = []string{}
 		for _, key := range k.Keys {
@@ -59,7 +59,7 @@ func (k KeyType) String() string {
 }
 
 func (k KeyType) Representation() string {
-	var result string = fmt.Sprintf("KeyType{Type: %s", k.Type)
+	var result string = fmt.Sprintf("KeyType{KeyKind: %s", k.KeyKind)
 	if len(k.Keys) > 0 {
 		result += fmt.Sprintf(", Keys: []int{%s}",
 			strings.Join(strings.Fields(strings.Trim(fmt.Sprint(k.Keys), "[]")), ", "))
@@ -68,10 +68,12 @@ func (k KeyType) Representation() string {
 	return result
 }
 
+func (k *KeyType) Type() string { return "string" }
+
 func (k *KeyType) Set(s string) error {
 	var fields []string = strings.Split(s, ",")
 	if len(fields) == 1 {
-		k.Type = SingleField
+		k.KeyKind = SingleField
 		keyValue, err := strconv.ParseInt(fields[0], 10, 32)
 		if err != nil {
 			log.Fatal().Msgf("could not parse key %s (%s): %s", fields[0], s, err.Error())
@@ -79,14 +81,14 @@ func (k *KeyType) Set(s string) error {
 		k.Keys = append(k.Keys, int(keyValue))
 	} else if len(fields) == 2 {
 		if fields[1] == "" {
-			k.Type = Remainder
+			k.KeyKind = Remainder
 			keyValue, err := strconv.ParseInt(fields[0], 10, 32)
 			if err != nil {
 				log.Fatal().Msgf("could not parse key %s (%s): %s", fields[0], s, err.Error())
 			}
 			k.Keys = append(k.Keys, int(keyValue))
 		} else {
-			k.Type = SubSet
+			k.KeyKind = SubSet
 			for i := 0; i < 2; i++ {
 				keyValue, err := strconv.ParseInt(fields[i], 10, 32)
 				if err != nil {
@@ -190,6 +192,8 @@ func (um UniqMode) String() string {
 	}
 	return "FIXME"
 }
+
+func (um UniqMode) Type() string { return "string" }
 
 func (um *UniqMode) Set(s string) error {
 	switch s {

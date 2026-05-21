@@ -136,7 +136,7 @@ func TestLoadInputFilesSingle(t *testing.T) {
 	options.multiline = 1
 	options.fieldSeparator = " "
 
-	key := KeyType{Type: NoKey}
+	key := KeyType{KeyKind: NoKey}
 	contents := LoadInputFiles([]string{testFile}, key)
 
 	if len(contents) != 3 {
@@ -173,7 +173,7 @@ func TestLoadInputFilesMultiple(t *testing.T) {
 	options.multiline = 1
 	options.fieldSeparator = " "
 
-	key := KeyType{Type: NoKey}
+	key := KeyType{KeyKind: NoKey}
 	contents := LoadInputFiles([]string{testFile1, testFile2}, key)
 
 	if len(contents) != 4 {
@@ -206,7 +206,7 @@ func TestLoadInputFilesWithMultiline(t *testing.T) {
 	options.multiline = 2
 	options.fieldSeparator = " "
 
-	key := KeyType{Type: NoKey}
+	key := KeyType{KeyKind: NoKey}
 	contents := LoadInputFiles([]string{testFile}, key)
 
 	if len(contents) != 2 {

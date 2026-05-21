@@ -3,6 +3,7 @@
 _complete_yet_another_sort () {
   local cur prev
   local known_options=(
+    --bash-history
     --cpuprofile
     --debug
     --field-separator
@@ -14,6 +15,7 @@ _complete_yet_another_sort () {
     --memprofile
     --multiline
     --output
+    --stable-sort
     --uniq
     --version
     -h --help

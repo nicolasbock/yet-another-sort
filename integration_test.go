@@ -109,7 +109,7 @@ func TestIntegrationKeySort(t *testing.T) {
 	options.files = []string{inputFile}
 	options.multiline = 1
 	options.fieldSeparator = " "
-	key := KeyType{Type: SingleField, Keys: []int{2}}
+	key := KeyType{KeyKind: SingleField, Keys: []int{2}}
 
 	// Run sort
 	contents := LoadInputFiles(options.files, key)
@@ -258,7 +258,7 @@ func TestIntegrationCustomSeparator(t *testing.T) {
 	options.files = []string{inputFile}
 	options.multiline = 1
 	options.fieldSeparator = ","
-	key := KeyType{Type: SingleField, Keys: []int{2}}
+	key := KeyType{KeyKind: SingleField, Keys: []int{2}}
 
 	// Run sort (skip header)
 	contents := LoadInputFiles(options.files, key)
@@ -298,7 +298,7 @@ func TestIntegrationRemainderKey(t *testing.T) {
 	options.files = []string{inputFile}
 	options.multiline = 1
 	options.fieldSeparator = " "
-	key := KeyType{Type: Remainder, Keys: []int{2}}
+	key := KeyType{KeyKind: Remainder, Keys: []int{2}}
 
 	// Run sort
 	contents := LoadInputFiles(options.files, key)
@@ -339,7 +339,7 @@ func TestIntegrationSubsetKey(t *testing.T) {
 	options.files = []string{inputFile}
 	options.multiline = 1
 	options.fieldSeparator = " "
-	key := KeyType{Type: SubSet, Keys: []int{2, 3}}
+	key := KeyType{KeyKind: SubSet, Keys: []int{2, 3}}
 
 	// Run sort
 	contents := LoadInputFiles(options.files, key)

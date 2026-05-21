@@ -30,7 +30,7 @@ func TestKeyTString(t *testing.T) {
 
 func TestKeyTypeString(t *testing.T) {
 	var kt KeyType = KeyType{
-		Type: NoKey,
+		KeyKind: NoKey,
 	}
 	var expected string = "NoKey"
 	var got string = kt.String()
@@ -38,7 +38,7 @@ func TestKeyTypeString(t *testing.T) {
 		t.Errorf("Expected\n%s\ngot\n%s", expected, got)
 	}
 	kt = KeyType{
-		Type: SingleField,
+		KeyKind: SingleField,
 		Keys: []int{1},
 	}
 	expected = "SingleField, [1]"
@@ -47,7 +47,7 @@ func TestKeyTypeString(t *testing.T) {
 		t.Errorf("Expected\n%s\ngot\n%s", expected, got)
 	}
 	kt = KeyType{
-		Type: Remainder,
+		KeyKind: Remainder,
 		Keys: []int{1},
 	}
 	expected = "Remainder, [1]"
@@ -56,7 +56,7 @@ func TestKeyTypeString(t *testing.T) {
 		t.Errorf("Expected\n%s\ngot\n%s", expected, got)
 	}
 	kt = KeyType{
-		Type: SubSet,
+		KeyKind: SubSet,
 		Keys: []int{1, 3},
 	}
 	expected = "SubSet, [1, 3]"
@@ -68,36 +68,36 @@ func TestKeyTypeString(t *testing.T) {
 
 func TestKeyTypeRepresentation(t *testing.T) {
 	var kt KeyType = KeyType{
-		Type: NoKey,
+		KeyKind: NoKey,
 	}
-	var expected string = "KeyType{Type: NoKey}"
+	var expected string = "KeyType{KeyKind: NoKey}"
 	var got string = kt.Representation()
 	if strings.Compare(got, expected) != 0 {
 		t.Errorf("Expected\n%s\ngot\n%s", expected, got)
 	}
 	kt = KeyType{
-		Type: SingleField,
+		KeyKind: SingleField,
 		Keys: []int{1},
 	}
-	expected = "KeyType{Type: SingleField, Keys: []int{1}}"
+	expected = "KeyType{KeyKind: SingleField, Keys: []int{1}}"
 	got = kt.Representation()
 	if strings.Compare(got, expected) != 0 {
 		t.Errorf("Expected\n%s\ngot\n%s", expected, got)
 	}
 	kt = KeyType{
-		Type: Remainder,
+		KeyKind: Remainder,
 		Keys: []int{1},
 	}
-	expected = "KeyType{Type: Remainder, Keys: []int{1}}"
+	expected = "KeyType{KeyKind: Remainder, Keys: []int{1}}"
 	got = kt.Representation()
 	if strings.Compare(got, expected) != 0 {
 		t.Errorf("Expected\n%s\ngot\n%s", expected, got)
 	}
 	kt = KeyType{
-		Type: SubSet,
+		KeyKind: SubSet,
 		Keys: []int{1, 4},
 	}
-	expected = "KeyType{Type: SubSet, Keys: []int{1, 4}}"
+	expected = "KeyType{KeyKind: SubSet, Keys: []int{1, 4}}"
 	got = kt.Representation()
 	if strings.Compare(got, expected) != 0 {
 		t.Errorf("Expected\n%s\ngot\n%s", expected, got)
@@ -186,8 +186,8 @@ func TestKeyTypeSetSingleField(t *testing.T) {
 	if err != nil {
 		t.Errorf("Unexpected error: %v", err)
 	}
-	if kt.Type != SingleField {
-		t.Errorf("Expected type SingleField, got %s", kt.Type)
+	if kt.KeyKind != SingleField {
+		t.Errorf("Expected type SingleField, got %s", kt.KeyKind)
 	}
 	if len(kt.Keys) != 1 || kt.Keys[0] != 3 {
 		t.Errorf("Expected Keys [3], got %v", kt.Keys)
@@ -200,8 +200,8 @@ func TestKeyTypeSetRemainder(t *testing.T) {
 	if err != nil {
 		t.Errorf("Unexpected error: %v", err)
 	}
-	if kt.Type != Remainder {
-		t.Errorf("Expected type Remainder, got %s", kt.Type)
+	if kt.KeyKind != Remainder {
+		t.Errorf("Expected type Remainder, got %s", kt.KeyKind)
 	}
 	if len(kt.Keys) != 1 || kt.Keys[0] != 2 {
 		t.Errorf("Expected Keys [2], got %v", kt.Keys)
@@ -214,8 +214,8 @@ func TestKeyTypeSetSubSet(t *testing.T) {
 	if err != nil {
 		t.Errorf("Unexpected error: %v", err)
 	}
-	if kt.Type != SubSet {
-		t.Errorf("Expected type SubSet, got %s", kt.Type)
+	if kt.KeyKind != SubSet {
+		t.Errorf("Expected type SubSet, got %s", kt.KeyKind)
 	}
 	if len(kt.Keys) != 2 || kt.Keys[0] != 1 || kt.Keys[1] != 4 {
 		t.Errorf("Expected Keys [1, 4], got %v", kt.Keys)

@@ -20,7 +20,7 @@ func TestProcessInputFiles1(t *testing.T) {
 	}
 	options.multiline = 1
 	var key KeyType = KeyType{
-		Type: NoKey,
+		KeyKind: NoKey,
 	}
 	var expected ContentType = ContentType{
 		{Lines: []string{"Line one"}, Fields: nil, CompareLine: "Line one"},
@@ -43,7 +43,7 @@ func TestProcessInputFiles2(t *testing.T) {
 	}
 	options.multiline = 2
 	var key KeyType = KeyType{
-		Type: NoKey,
+		KeyKind: NoKey,
 	}
 	var expected ContentType = ContentType{
 		{Lines: []string{"Line one", "Line two"}, Fields: nil, CompareLine: "Line one Line two"},
@@ -64,7 +64,7 @@ func TestProcessInputFiles3(t *testing.T) {
 	}
 	options.multiline = 2
 	var key KeyType = KeyType{
-		Type: SingleField,
+		KeyKind: SingleField,
 		Keys: []int{1},
 	}
 	var expected ContentType = ContentType{
@@ -111,7 +111,7 @@ func TestProcessInputFilesWithRemainder(t *testing.T) {
 	options.ignoreCase = false
 	options.ignoreLeadingBlanks = false
 	var key KeyType = KeyType{
-		Type: Remainder,
+		KeyKind: Remainder,
 		Keys: []int{2},
 	}
 	var expected ContentType = ContentType{
@@ -134,7 +134,7 @@ func TestProcessInputFilesWithSubSet(t *testing.T) {
 	options.ignoreCase = false
 	options.ignoreLeadingBlanks = false
 	var key KeyType = KeyType{
-		Type: SubSet,
+		KeyKind: SubSet,
 		Keys: []int{2, 4},
 	}
 	var expected ContentType = ContentType{
@@ -158,7 +158,7 @@ func TestProcessInputFilesWithIgnoreLeadingBlanks(t *testing.T) {
 	options.ignoreCase = false
 	options.ignoreLeadingBlanks = true
 	var key KeyType = KeyType{
-		Type: NoKey,
+		KeyKind: NoKey,
 	}
 	var expected ContentType = ContentType{
 		{Lines: []string{"  leading spaces"}, Fields: nil, CompareLine: "leading spaces"},
@@ -182,7 +182,7 @@ func TestProcessInputFilesWithCustomSeparator(t *testing.T) {
 	options.ignoreCase = false
 	options.ignoreLeadingBlanks = false
 	var key KeyType = KeyType{
-		Type: SingleField,
+		KeyKind: SingleField,
 		Keys: []int{2},
 	}
 	var expected ContentType = ContentType{
@@ -206,7 +206,7 @@ func TestProcessInputFilesWithMultiCharSeparator(t *testing.T) {
 	options.ignoreCase = false
 	options.ignoreLeadingBlanks = false
 	var key KeyType = KeyType{
-		Type: NoKey,
+		KeyKind: NoKey,
 	}
 	var expected ContentType = ContentType{
 		{Lines: []string{"field1::field2::field3"}, Fields: []string{"field1", "field2", "field3"}, CompareLine: "field1::field2::field3"},
@@ -230,7 +230,7 @@ func TestProcessInputFilesEmptyFields(t *testing.T) {
 	options.ignoreCase = false
 	options.ignoreLeadingBlanks = false
 	var key KeyType = KeyType{
-		Type: NoKey,
+		KeyKind: NoKey,
 	}
 	var expected ContentType = ContentType{
 		{Lines: []string{"field1,,field3"}, Fields: []string{"field1", "field3"}, CompareLine: "field1,field3"},
@@ -253,7 +253,7 @@ func TestProcessInputFilesSingleFieldOnly(t *testing.T) {
 	options.ignoreCase = false
 	options.ignoreLeadingBlanks = false
 	var key KeyType = KeyType{
-		Type: NoKey,
+		KeyKind: NoKey,
 	}
 	var expected ContentType = ContentType{
 		{Lines: []string{"onlyfield"}, Fields: nil, CompareLine: "onlyfield"},
@@ -273,7 +273,7 @@ func TestProcessInputFilesNoFields(t *testing.T) {
 	options.ignoreCase = false
 	options.ignoreLeadingBlanks = false
 	var key KeyType = KeyType{
-		Type: NoKey,
+		KeyKind: NoKey,
 	}
 	var expected ContentType = ContentType{
 		{Lines: []string{""}, Fields: []string{}, CompareLine: ""},
@@ -295,7 +295,7 @@ func TestProcessInputFilesMultilineWithOddNumber(t *testing.T) {
 	options.ignoreCase = false
 	options.ignoreLeadingBlanks = false
 	var key KeyType = KeyType{
-		Type: NoKey,
+		KeyKind: NoKey,
 	}
 	var expected ContentType = ContentType{
 		{Lines: []string{"line1", "line2"}, Fields: nil, CompareLine: "line1 line2"},
@@ -317,7 +317,7 @@ func TestProcessInputFilesBothCaseAndLeadingBlanks(t *testing.T) {
 	options.ignoreCase = true
 	options.ignoreLeadingBlanks = true
 	var key KeyType = KeyType{
-		Type: NoKey,
+		KeyKind: NoKey,
 	}
 	var expected ContentType = ContentType{
 		{Lines: []string{"  UPPER case"}, Fields: nil, CompareLine: "upper case"},
