@@ -1,5 +1,6 @@
-name: dev
+name: sort
 base: ubuntu@26.04
 sdks:
   - name: go
   - name: opencode
+  - name: project-build-essentials
