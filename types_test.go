@@ -39,7 +39,7 @@ func TestKeyTypeString(t *testing.T) {
 	}
 	kt = KeyType{
 		KeyKind: SingleField,
-		Keys: []int{1},
+		Keys:    []int{1},
 	}
 	expected = "SingleField, [1]"
 	got = kt.String()
@@ -48,7 +48,7 @@ func TestKeyTypeString(t *testing.T) {
 	}
 	kt = KeyType{
 		KeyKind: Remainder,
-		Keys: []int{1},
+		Keys:    []int{1},
 	}
 	expected = "Remainder, [1]"
 	got = kt.String()
@@ -57,7 +57,7 @@ func TestKeyTypeString(t *testing.T) {
 	}
 	kt = KeyType{
 		KeyKind: SubSet,
-		Keys: []int{1, 3},
+		Keys:    []int{1, 3},
 	}
 	expected = "SubSet, [1, 3]"
 	got = kt.String()
@@ -77,7 +77,7 @@ func TestKeyTypeRepresentation(t *testing.T) {
 	}
 	kt = KeyType{
 		KeyKind: SingleField,
-		Keys: []int{1},
+		Keys:    []int{1},
 	}
 	expected = "KeyType{KeyKind: SingleField, Keys: []int{1}}"
 	got = kt.Representation()
@@ -86,7 +86,7 @@ func TestKeyTypeRepresentation(t *testing.T) {
 	}
 	kt = KeyType{
 		KeyKind: Remainder,
-		Keys: []int{1},
+		Keys:    []int{1},
 	}
 	expected = "KeyType{KeyKind: Remainder, Keys: []int{1}}"
 	got = kt.Representation()
@@ -95,7 +95,7 @@ func TestKeyTypeRepresentation(t *testing.T) {
 	}
 	kt = KeyType{
 		KeyKind: SubSet,
-		Keys: []int{1, 4},
+		Keys:    []int{1, 4},
 	}
 	expected = "KeyType{KeyKind: SubSet, Keys: []int{1, 4}}"
 	got = kt.Representation()

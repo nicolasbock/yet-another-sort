@@ -65,7 +65,7 @@ func TestProcessInputFiles3(t *testing.T) {
 	options.multiline = 2
 	var key KeyType = KeyType{
 		KeyKind: SingleField,
-		Keys: []int{1},
+		Keys:    []int{1},
 	}
 	var expected ContentType = ContentType{
 		{Lines: []string{"Line one", " Line two"}, Fields: []string{"Line", "one", "Line", "two"}, CompareLine: "Line"},
@@ -112,7 +112,7 @@ func TestProcessInputFilesWithRemainder(t *testing.T) {
 	options.ignoreLeadingBlanks = false
 	var key KeyType = KeyType{
 		KeyKind: Remainder,
-		Keys: []int{2},
+		Keys:    []int{2},
 	}
 	var expected ContentType = ContentType{
 		{Lines: []string{"field1 field2 field3 field4"}, Fields: []string{"field1", "field2", "field3", "field4"}, CompareLine: "field2 field3 field4"},
@@ -135,7 +135,7 @@ func TestProcessInputFilesWithSubSet(t *testing.T) {
 	options.ignoreLeadingBlanks = false
 	var key KeyType = KeyType{
 		KeyKind: SubSet,
-		Keys: []int{2, 4},
+		Keys:    []int{2, 4},
 	}
 	var expected ContentType = ContentType{
 		{Lines: []string{"field1 field2 field3 field4"}, Fields: []string{"field1", "field2", "field3", "field4"}, CompareLine: "field2 field3 field4"},
@@ -183,7 +183,7 @@ func TestProcessInputFilesWithCustomSeparator(t *testing.T) {
 	options.ignoreLeadingBlanks = false
 	var key KeyType = KeyType{
 		KeyKind: SingleField,
-		Keys: []int{2},
+		Keys:    []int{2},
 	}
 	var expected ContentType = ContentType{
 		{Lines: []string{"field1,field2,field3"}, Fields: []string{"field1", "field2", "field3"}, CompareLine: "field2"},
