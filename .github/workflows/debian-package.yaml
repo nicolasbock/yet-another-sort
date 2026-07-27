@@ -59,13 +59,13 @@ jobs:
           sudo pbuilder build --buildresult result build/*.dsc
 
       - name: Upload artifacts (source package)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: test-build-source-package
           path: build/**
 
       - name: Upload artifacts (binary package)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: test-build-binary-package
           path: result/**

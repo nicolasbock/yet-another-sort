@@ -53,11 +53,11 @@ jobs:
           diff -Naur sort.output yas.output
 
       - name: Upload artifacts (sort input)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ failure() }}
         with:
           name: functional test data
           path: |
-            input
+            artifacts/input-1
             sort.output
             yas.output
