@@ -16,6 +16,10 @@ on:
 jobs:
   debian:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os-series: [noble, resolute]
 
     steps:
       - uses: actions/checkout@v7
@@ -46,7 +50,7 @@ jobs:
       - name: Prepare pbuilder
         run: |
           set -e -u -x
-          sudo pbuilder create --distribution jammy
+          sudo pbuilder create --distribution ${{ matrix.os-series }}
           sudo pbuilder --update
 
       - name: Build binary package
