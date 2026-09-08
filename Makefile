@@ -24,20 +24,27 @@ TEST_FIELD_LENGTH = 5
 TEST_REPEATS = 6
 TIME = time --format '%Uu %Ss %er %MkB %C'
 
+.PHONY: quick
+quick: yet-another-sort generate-random-input-file
+	$(MAKE) benchmark-internal TEST_LINES=10
+
 .PHONY: benchmark
 benchmark: yet-another-sort generate-random-input-file
-	$(eval INFILE = $(shell mktemp))
-	$(eval OUTFILE = $(shell mktemp))
-	$(eval REFERENCE = $(shell mktemp))
-	$(eval CPUPROFILE = $(shell mktemp))
-	$(eval TEST_LINES = 2000 8000 16000 32000 64000 1024000)
+	$(MAKE) benchmark-internal TEST_LINES="2000 8000 16000 32000 64000 1024000"
+
+.PHONY: benchmark-internal
+benchmark-internal: yet-another-sort generate-random-input-file
+	$(eval INFILE = $(shell mktemp /tmp/sort-in-XXXXXX))
+	$(eval OUTFILE = $(shell mktemp /tmp/sort-out-XXXXX))
+	$(eval REFERENCE = $(shell mktemp /tmp/sort-reference-XXXXXX))
+	$(eval CPUPROFILE = $(shell mktemp /tmp/sort-cpu-profile-XXXXXX))
 	for lines in $(TEST_LINES); do \
 		echo "Testing $${lines} lines"; \
 		./scripts/generate-random-input-file --lines $${lines} --fields $(TEST_FIELDS) --field-length $(TEST_FIELD_LENGTH) > $(INFILE); \
 		for i in $$(seq $(TEST_REPEATS)); do \
-			$(TIME) ./yet-another-sort --stable-sort $(INFILE) > $(OUTFILE); \
-			$(TIME) sort --stable $(INFILE) > $(REFERENCE); \
+			$(TIME) ./yet-another-sort --stable-sort $(INFILE) --cpuprofile $(CPUPROFILE) > $(OUTFILE); \
+			LC_ALL=C $(TIME) sort --stable $(INFILE) > $(REFERENCE); \
 		done; \
 		diff -Nsaur $(REFERENCE) $(OUTFILE); \
 	done
-	@echo "Results are in $(OUTFILE) and $(REFERENCE)"
+	@echo "Results are in $(OUTFILE) and $(REFERENCE); CPU profile is in $(CPUPROFILE)"
