@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os-series: [noble, resolute, stonking]
+        os-series: [jammy, noble, resolute, stonking]
 
     steps:
       - uses: actions/checkout@v7
