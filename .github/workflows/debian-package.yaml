@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os-series: [noble, resolute]
+        os-series: [noble, resolute, stonking]
 
     steps:
       - uses: actions/checkout@v7
@@ -61,11 +61,11 @@ jobs:
       - name: Upload artifacts (source package)
         uses: actions/upload-artifact@v7
         with:
-          name: test-build-source-package
+          name: test-build-source-package-${{ matrix.os-series }}
           path: build/**
 
       - name: Upload artifacts (binary package)
         uses: actions/upload-artifact@v7
         with:
-          name: test-build-binary-package
+          name: test-build-binary-package-${{ matrix.os-series }}
           path: result/**
