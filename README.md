@@ -65,7 +65,11 @@ ls
 
 ## Installation
 
+### As a Snap
+
 [![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/yet-another-sort)
+
+### As a Debian package
 
 The program can also be installed via a regular Ubuntu package (on `Jammy`,
 `Lunar`, `Mantic`, or `Noble`):
