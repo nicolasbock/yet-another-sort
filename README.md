@@ -3,6 +3,7 @@
 A sort util that mimics the functionality of GNU `sort`
 
 [![Build and test](https://github.com/nicolasbock/yet-another-sort/actions/workflows/go-package.yaml/badge.svg)](https://github.com/nicolasbock/yet-another-sort/actions/workflows/go-package.yaml)
+[![Build Debian package](https://github.com/nicolasbock/yet-another-sort/actions/workflows/debian-package.yaml/badge.svg)](https://github.com/nicolasbock/yet-another-sort/actions/workflows/debian-package.yaml)
 
 ## Introduction
 
