@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"io"
 	"os"
-	"unsafe"
 
 	"github.com/rs/zerolog/log"
 )
@@ -13,7 +12,7 @@ import (
 // lines in that text file. The special filename `-` means standard input.
 //
 // The entire file is read into a single []byte buffer. Line strings are created
-// as zero-copy views into that buffer via unsafe.String, so no per-line heap
+// as zero-copy views into that buffer via bytesToString, so no per-line heap
 // allocation is needed. Because those strings point at the original bytes, the
 // buffer must not be modified for as long as any returned string is in use.
 // The backing array remains reachable through the returned strings, so it stays
@@ -53,16 +52,17 @@ func LoadFile(filename string) []string {
 	lines := make([]string, 0, numLines)
 
 	// Walk the buffer and produce zero-copy string views into it.
-	// unsafe.String(ptr, len) constructs a string header pointing directly at
-	// the existing bytes — no copy is made.
+	// bytesToString constructs a string header pointing directly at the
+	// existing bytes — no copy is made. See unsafe_string_go120.go and
+	// unsafe_string_legacy.go for the per-toolchain implementations.
 	rest := data
 	for {
 		idx := bytes.IndexByte(rest, '\n')
 		if idx < 0 {
-			lines = append(lines, unsafe.String(unsafe.SliceData(rest), len(rest)))
+			lines = append(lines, bytesToString(rest))
 			break
 		}
-		lines = append(lines, unsafe.String(unsafe.SliceData(rest), idx))
+		lines = append(lines, bytesToString(rest[:idx]))
 		rest = rest[idx+1:]
 	}
 
