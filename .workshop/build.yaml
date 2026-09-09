@@ -1,4 +1,4 @@
-name: sort
+name: build
 base: ubuntu@26.04
 sdks:
   - name: go
