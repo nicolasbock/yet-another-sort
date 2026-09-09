@@ -1,7 +1,17 @@
 #!/usr/bin/make -f
 
 export DH_VERBOSE = 1
+
+# dh-golang builds in GOPATH mode, where go.mod is ignored and the binary is
+# named after the last element of the import path. DH_GOPKG therefore
+# deliberately omits the "/v2" major-version suffix of the module path in
+# go.mod; including it would install the binary as /usr/bin/v2.
+#
+# This only holds as long as no package in this source imports the module path
+# (everything is "package main" in the top-level directory). If that ever
+# changes, the import paths and DH_GOPKG have to be reconciled.
 export DH_GOPKG := github.com/nicolasbock/yet-another-sort
+export GO111MODULE := off
 
 %:
 	dh $@ --buildsystem=golang --with=golang
