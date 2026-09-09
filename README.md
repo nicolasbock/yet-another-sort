@@ -71,8 +71,7 @@ ls
 
 ### As a Debian package
 
-The program can also be installed via a regular Ubuntu package (on `Jammy`,
-`Lunar`, `Mantic`, or `Noble`):
+The program can also be installed via a regular Ubuntu package (on `Jammy`, `Noble`, `Resolute`):
 
 ```console
 sudo add-apt-repository ppa:nicolasbock/yet-another-sort
