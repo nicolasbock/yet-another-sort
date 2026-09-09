@@ -3,8 +3,16 @@
 export DH_VERBOSE = 1
 export DH_GOPKG := github.com/nicolasbock/yet-another-sort
 
+# Provides DEB_VERSION, DEB_VERSION_UPSTREAM, ... from debian/changelog
+include /usr/share/dpkg/pkg-info.mk
+
 %:
 	dh $@ --buildsystem=golang --with=golang
+
+# Stamp the binary with the version from debian/changelog instead of
+# relying on "git describe", which is unavailable in the build tree.
+override_dh_auto_build:
+	dh_auto_build -- -ldflags "-X main.Version=$(DEB_VERSION)"
 
 override_dh_auto_install:
 	dh_auto_install -- --no-source
