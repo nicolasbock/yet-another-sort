@@ -1,5 +1,5 @@
 name: yet-another-sort
-base: core22
+base: core26
 adopt-info: yet-another-sort
 license: Apache-2.0
 source-code: https://github.com/nicolasbock/yet-another-sort
@@ -51,6 +51,8 @@ parts:
   yet-another-sort:
     plugin: dump
     source: .
+    build-packages:
+      - git
     build-snaps:
       - go/1.26/stable
     override-build: |
