@@ -242,14 +242,14 @@ Fish:
   %s completion fish | source
 
   # To load completions for each session, execute once:
-  %s completion fish > ~/.config/fish/completions/yet-another-sort.fish
+  %s completion fish > ~/.config/fish/completions/%s.fish
 
 PowerShell:
   %s completion powershell | Out-String | Invoke-Expression
 
   # To load completions for each session, add the output of the above command
   # to your PowerShell profile.
-`, binaryName, binaryName, binaryName, binaryName, binaryName, binaryName, binaryName),
+`, binaryName, binaryName, binaryName, binaryName, binaryName, binaryName, path.Base(binaryName), binaryName),
 		DisableFlagsInUseLine: true,
 		ValidArgs:             []string{"bash", "zsh", "fish", "powershell"},
 		Args:                  cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
