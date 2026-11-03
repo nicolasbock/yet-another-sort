@@ -26,3 +26,4 @@ override_dh_auto_build:
 
 override_dh_auto_install:
 	dh_auto_install -- --no-source
+	dh_link usr/bin/yet-another-sort usr/bin/yas
